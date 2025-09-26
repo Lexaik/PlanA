@@ -15,9 +15,13 @@ public class PlanADbContext : DbContext
     public DbSet<OrderItems> OrderItems { get; set; } = null!;
     public DbSet<Process> Processes { get; set; } = null!;
     public DbSet<SubItems> SubItems { get; set; } = null!;
- 
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite(ConnectionString);
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            //.SetBasePath(Directory.GetCurrentDirectory())
+            .Build();
+        optionsBuilder.UseSqlite(config.GetConnectionString("DefaultConnection"));
     }
 }
