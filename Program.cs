@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using PlanA.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
