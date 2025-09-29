@@ -1,9 +1,8 @@
 namespace PlanA.Models;
 
-public class SubItems
+public class Sub_items
 {
-    public int Id { get; set;}
-    public int Item_Id { get; set;}
-    public int SubItem_Id { get; set;}
+    public int ItemId { get; set;}
+    public int SubItemId { get; set;}
     public int Quantity { get; set;}
 }
