@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PlanA.Models;
 
 public class Item
@@ -6,4 +8,5 @@ public class Item
     public required string Name { get; set;}
     public List<Item> SubItems { get; set;} = new();
     public List<Operation> Operations { get; set;} = new();
+    public List<Operation_items> OperationItems { get; set;} = new();
 }
