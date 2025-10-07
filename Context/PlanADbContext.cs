@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PlanA.ModelConfigurations;
 using PlanA.Models;
 
 namespace PlanA.Context;
@@ -24,24 +25,7 @@ public class PlanADbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Operation>()
-            .HasMany(o => o.Items)
-            .WithMany(i => i.Operations)
-            .UsingEntity<Operation_items>(
-                j => j
-                    .HasOne(pt => pt.Item)
-                    .WithMany(t => t.OperationItems)
-                    .HasForeignKey(pt => pt.ItemId),
-                    j => j
-                        .HasOne(pt => pt.Operation)
-                        .WithMany(t => t.OperationItems)
-                        .HasForeignKey(pt => pt.OperationId),
-                    j =>
-                    {
-                        j.Property(pt => pt.OperationItemType);
-                        j.Property(pt => pt.Quantity);
-                        j.HasKey(t => new { t.ItemId, t.OperationId });
-                        j.ToTable("Operation_Items");
-                    });
+        modelBuilder.ApplyConfiguration(new OperationItemsConfiguration());
+       
     }
 }

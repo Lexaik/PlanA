@@ -8,5 +8,7 @@ public class Item
     public required string Name { get; set;}
     public List<Item> SubItems { get; set;} = new();
     public List<Operation> Operations { get; set;} = new();
+    public List<Order> Orders { get; set;} = new();
     public List<Operation_items> OperationItems { get; set;} = new();
+    public List<Order_items> OrderItems { get; set;} = new();
 }
