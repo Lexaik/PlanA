@@ -26,6 +26,8 @@ public class PlanADbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new OperationItemsConfiguration());
-       
+        modelBuilder.ApplyConfiguration(new OrderItemsConfiguration());
+        modelBuilder.ApplyConfiguration(new SubItemsConfiguration());
+        
     }
 }
