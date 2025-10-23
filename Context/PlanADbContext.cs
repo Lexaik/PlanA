@@ -28,6 +28,6 @@ public class PlanADbContext : DbContext
         modelBuilder.ApplyConfiguration(new OperationItemsConfiguration());
         modelBuilder.ApplyConfiguration(new OrderItemsConfiguration());
         modelBuilder.ApplyConfiguration(new SubItemsConfiguration());
-        
+        modelBuilder.ApplyConfiguration(new SubprocessConfiguration());
     }
 }

@@ -12,7 +12,7 @@ public class SubprocessConfiguration: IEntityTypeConfiguration<Sub_process>
         builder.HasKey(p => new { p.ProcessId, p.SubProcessId });
         
         builder.HasOne(i => i.Process)
-            .WithMany(s => s.SubProcesses)
+            .WithMany(s => s.ItemSubProcesses)
             .HasForeignKey(i => i.ProcessId)
             .OnDelete(DeleteBehavior.Cascade);
     }
