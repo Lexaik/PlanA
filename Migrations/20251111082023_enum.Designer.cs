@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlanA.Context;
 
@@ -10,9 +11,11 @@ using PlanA.Context;
 namespace PlanA.Migrations
 {
     [DbContext(typeof(PlanADbContext))]
-    partial class PlanADbContextModelSnapshot : ModelSnapshot
+    [Migration("20251111082023_enum")]
+    partial class @enum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -159,9 +162,6 @@ namespace PlanA.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("ProcessId1")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ProcessId");

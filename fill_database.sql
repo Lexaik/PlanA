@@ -47,16 +47,63 @@ VALUES (1, 'Заказ 0001'),
        (4, 'Заказ 0004'),
        (5, 'Заказ 0005');
 
-INSERT INTO Processes (ProcessId, Name, Duration)
-VALUES (1, 'Изготовление распылителя', '10 day'),
-       (2, 'Изготовление огнепреградителя', '30 day');
+INSERT INTO Processes (ProcessId, Name, Duration, Quantity)
+VALUES (1, 'Изготовление распылителей', '10 day', 10),
+       (2, 'Изготовление огнепреградителей', '30 day', 20),
+       (3, 'Изготовление корпусов', '2 day', 40),
+       (4, 'Изготовление вставок', '1 day', 20),
+       (5, 'Изготовление штуцеров', '10 day', 10),
+       (6, 'Изготовление форсунок', '10 day', 10),
+       (7, 'Покраска распылителей', '1 day', 10),
+       (8, 'Покраска огнепреградителей', '2 day', 20),
+       (9, 'Упаковка распылителей', '1 day', 10),
+       (10, 'Упаковка огнепреградителей', '2 day', 20);
 
 INSERT INTO Sub_Items (ItemId, SubItemId, Quantity)
 VALUES (12, 10, 1),
        (12, 11, 1),
        (15, 13, 2),
        (15, 14, 1),
-       (5, 'Заказ 0005', 4);
+       (14, 1, 100),
+       (13, 4, 1),
+       (13, 6, 1),
+       (13, 7, 1),
+       (10, 9, 50),
+       (11, 8, 100);
+
+INSERT INTO Order_Items (OrderId, ItemId, Quantity)
+VALUES (1, 12, 10),
+       (1, 15, 5),
+       (2, 12, 20),
+       (2, 15, 100),
+       (3, 12, 10),
+       (3, 15, 50),
+       (4, 12, 1),
+       (4, 15, 3),
+       (5, 12, 50),
+       (5, 15, 100);
+
+INSERT INTO Operation_Items (OperationId, ItemId, Quantity, ItemType)
+VALUES (12, 10, 1, 'Product'),
+       (12, 11, 1, 'Product'),
+       (15, 13, 2, 'Product'),
+       (15, 14, 1, 'Product'),
+       (14, 1, 100, 'Sources'),
+       (13, 4, 1, 'Sources'),
+       (13, 6, 1, 'Sources'),
+       (13, 7, 1, 'Sources'),
+       (10, 9, 50, 'Sources'),
+       (11, 8, 100, 'Sources');
+
+INSERT INTO Sub_Processes (ProcessId, SubProcessId)
+VALUES (1, 5),
+       (1, 6),
+       (1, 7),
+       (1, 9),
+       (2, 3),
+       (2, 4),
+       (2, 8),
+       (2, 10);
 
 INSERT INTO table_persons (first_name, last_name, patronymic, date_of_birth)
 VALUES ('Василий', 'Васильев', 'Васильевич', '1990-01-01'),

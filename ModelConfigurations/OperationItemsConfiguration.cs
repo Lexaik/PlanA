@@ -10,7 +10,7 @@ public class OperationItemsConfiguration : IEntityTypeConfiguration<Operation_it
     {
         builder.ToTable("Operation_Items");
             builder.HasKey(o => new { o.ItemId, o.OperationId });
-            builder.Property(o => o.OperationItemType).IsRequired();
+            builder.Property(o => o.ItemType).IsRequired();
             builder.Property(o => o.Quantity).IsRequired();
             
             builder.HasOne(i => i.Item)
