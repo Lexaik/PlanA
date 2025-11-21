@@ -5,7 +5,7 @@
 namespace PlanA.Migrations
 {
     /// <inheritdoc />
-    public partial class addquantityinprocess : Migration
+    public partial class Addquantityinprocess : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

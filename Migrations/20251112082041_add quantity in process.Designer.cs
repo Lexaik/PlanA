@@ -12,7 +12,7 @@ namespace PlanA.Migrations
 {
     [DbContext(typeof(PlanADbContext))]
     [Migration("20251112082041_add quantity in process")]
-    partial class addquantityinprocess
+    partial class Addquantityinprocess
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
