@@ -4,10 +4,10 @@ using PlanA.Models;
 
 namespace PlanA.Controllers;
 
-public class Home_controller : Controller {
-    private readonly ILogger<Home_controller> _logger;
+public class HomeController : Controller {
+    private readonly ILogger<HomeController> _logger;
 
-    public Home_controller(ILogger<Home_controller> logger) {
+    public HomeController(ILogger<HomeController> logger) {
         _logger = logger;
     }
 
@@ -21,6 +21,6 @@ public class Home_controller : Controller {
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error() {
-        return View(new Error_view_model { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

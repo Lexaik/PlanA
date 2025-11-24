@@ -1,6 +1,6 @@
 namespace PlanA.Models;
 
-public class Error_view_model
+public class ErrorViewModel
 {
     public string? RequestId { get; set; }
 
