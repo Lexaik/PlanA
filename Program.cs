@@ -1,6 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using PlanA.Context;
+using PlanA.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<PlanADbContext>(options => options.UseSqlite(connection));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

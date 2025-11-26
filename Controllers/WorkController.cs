@@ -10,7 +10,7 @@ public class WorkController : Controller {
     private readonly ILogger<WorkController> _logger;
 
     PlanADbContext db;
-    public WorkController(PlanADbContext context, ILogger<WorkController> logger, PlanADbContext db) {
+    /*public WorkController(PlanADbContext context, ILogger<WorkController> logger, PlanADbContext db) {
         db = context;
         _logger = logger;
         this.db = db;
@@ -18,6 +18,10 @@ public class WorkController : Controller {
     public WorkController(ILogger<WorkController> logger, PlanADbContext db) {
         _logger = logger;
         this.db = db;
+    }*/
+    
+    public WorkController(PlanADbContext context) {
+        db = context;
     }
 
     public async Task<IActionResult> Index() {
