@@ -7,6 +7,7 @@ namespace PlanA.Context;
 public class PlanADbContext : DbContext
 {
     public DbSet<Item> Items { get; set; } = null!;
+    public DbSet<Asset> Storage { get; set; } = null!;
     public DbSet<Operation> Operations { get; set; } = null!;
     public DbSet<Order> Orders { get; set; } = null!;
     public DbSet<Order_items> OrderItems { get; set; } = null!;
@@ -16,7 +17,7 @@ public class PlanADbContext : DbContext
 
     public PlanADbContext(DbContextOptions<PlanADbContext> options)
         : base(options) {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
