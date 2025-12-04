@@ -1,4 +1,5 @@
-﻿@model PlanA.Models.Item
+﻿@model PlanA.Models.Asset
+
 
 @{
     ViewData["Title"] = "Создание нового изделия";
@@ -7,8 +8,13 @@
 <div class="text-center">
     <form asp-action="Create" asp-controller="Work">
         <p>
-            <label asp-for="Name">Имя</label><br />
-            <input type="text" asp-for="Name" />
+            
+            <label asp-for="Item.Name">Имя</label>
+            <input type="text" asp-for="Item.Name" />
+            <br/>
+
+            <label asp-for="Quantity">Количество</label>
+            <input type="text" asp-for="Quantity"/>
         </p>
         <p>
             <input type="submit" value="Отправить" />

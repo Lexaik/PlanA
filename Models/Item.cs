@@ -2,11 +2,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlanA.Models;
 
-public class Item
-{
-    public int ItemId { get; init;}
+public class Item {
+    public int Id { get; init;}
     public required string Name { get; set;}
     
+    public Asset? Asset { get; set;}
     public List<Item> SubItems { get; set;} = new();
     public List<Operation> Operations { get; set;} = new();
     public List<Order> Orders { get; set;} = new();
