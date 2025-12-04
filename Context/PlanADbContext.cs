@@ -13,6 +13,7 @@ public class PlanADbContext : DbContext
     public DbSet<Process> Processes { get; set; } = null!;
     public DbSet<Sub_process> SubProcesses { get; set; } = null!;
     public DbSet<Sub_items> SubItems { get; set; } = null!;
+    //смрооспро
 
     public PlanADbContext(DbContextOptions<PlanADbContext> options)
         : base(options) {
