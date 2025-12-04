@@ -5,8 +5,6 @@ namespace PlanA.Models;
 public class Item {
     public int Id { get; init;}
     public required string Name { get; set;}
-    public int StorageItemId { get; set;}
-    public Asset StorageItem { get; set;}
     
     public Asset? Asset { get; set;}
     public List<Item> SubItems { get; set;} = new();
