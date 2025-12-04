@@ -1,20 +1,17 @@
-﻿@model IEnumerable<PlanA.Models.Asset>
+﻿@model IEnumerable<PlanA.Models.Item>
 
 @{
     ViewData["Title"] = "Перечень изделий";
 }
 
 <div class="text-center">
-    <p><a asp-action="Create">Добавить складскую единицу</a></p>
+    <p><a asp-action="Create">Добавить изделие</a></p>
     <table class="table">
-        <tr><th>Название</th>
-            <th>Количество</th>
-        </tr>
-        @foreach (var asset in Model)
+        <tr><th>Название</th></tr>
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@asset.Item.Name</td>
-                <td>@asset.Quantity</td>
+                <td>@item.Name</td>
             </tr>
         }
     </table>
