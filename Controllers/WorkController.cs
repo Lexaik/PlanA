@@ -25,16 +25,16 @@ public class WorkController : Controller {
     }
 
     public async Task<IActionResult> Index() {
-        return View(await db.Items.ToListAsync());
+        return View(await db.Assets.Include(i => i.Item).ToListAsync());
     }
 
     public IActionResult Create() {
         return View();
     }
     [HttpPost]
-    public async Task<IActionResult> Create(Item item)
+    public async Task<IActionResult> Create(Asset asset, Item item)
     {
-        db.Items.Add(item);
+        db.Assets.Add(asset);
         await db.SaveChangesAsync();
         return RedirectToAction("Index");
     }

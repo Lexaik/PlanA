@@ -11,8 +11,8 @@ using PlanA.Context;
 namespace PlanA.Migrations
 {
     [DbContext(typeof(PlanADbContext))]
-    [Migration("20251111082023_enum")]
-    partial class @enum
+    [Migration("20251204093952_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,57 +22,85 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("ItemOperation", b =>
                 {
-                    b.Property<int>("ItemsItemId")
+                    b.Property<int>("ItemsId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("OperationsOperationId")
+                    b.Property<int>("OperationsId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ItemsItemId", "OperationsOperationId");
+                    b.HasKey("ItemsId", "OperationsId");
 
-                    b.HasIndex("OperationsOperationId");
+                    b.HasIndex("OperationsId");
 
                     b.ToTable("ItemOperation");
                 });
 
             modelBuilder.Entity("ItemOrder", b =>
                 {
-                    b.Property<int>("ItemsItemId")
+                    b.Property<int>("ItemsId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("OrdersOrderId")
+                    b.Property<int>("OrdersId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ItemsItemId", "OrdersOrderId");
+                    b.HasKey("ItemsId", "OrdersId");
 
-                    b.HasIndex("OrdersOrderId");
+                    b.HasIndex("OrdersId");
 
                     b.ToTable("ItemOrder");
                 });
 
-            modelBuilder.Entity("PlanA.Models.Item", b =>
+            modelBuilder.Entity("OperationProcess", b =>
                 {
-                    b.Property<int>("ItemId")
+                    b.Property<int>("OperationsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProcessesId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("OperationsId", "ProcessesId");
+
+                    b.HasIndex("ProcessesId");
+
+                    b.ToTable("OperationProcess");
+                });
+
+            modelBuilder.Entity("PlanA.Models.Asset", b =>
+                {
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ItemId1")
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Assets", (string)null);
+                });
+
+            modelBuilder.Entity("PlanA.Models.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ItemId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ItemId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ItemId1");
+                    b.HasIndex("ItemId");
 
-                    b.ToTable("Items");
+                    b.ToTable("Assets", (string)null);
                 });
 
             modelBuilder.Entity("PlanA.Models.Operation", b =>
                 {
-                    b.Property<int>("OperationId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -83,12 +111,7 @@ namespace PlanA.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ProcessId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("OperationId");
-
-                    b.HasIndex("ProcessId");
+                    b.HasKey("Id");
 
                     b.ToTable("Operations");
                 });
@@ -117,7 +140,7 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Order", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -125,7 +148,7 @@ namespace PlanA.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
                     b.ToTable("Orders");
                 });
@@ -150,7 +173,7 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Process", b =>
                 {
-                    b.Property<int>("ProcessId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -161,12 +184,15 @@ namespace PlanA.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ProcessId1")
+                    b.Property<int?>("ProcessId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ProcessId");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
 
-                    b.HasIndex("ProcessId1");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcessId");
 
                     b.ToTable("Processes");
                 });
@@ -208,13 +234,13 @@ namespace PlanA.Migrations
                 {
                     b.HasOne("PlanA.Models.Item", null)
                         .WithMany()
-                        .HasForeignKey("ItemsItemId")
+                        .HasForeignKey("ItemsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PlanA.Models.Operation", null)
                         .WithMany()
-                        .HasForeignKey("OperationsOperationId")
+                        .HasForeignKey("OperationsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -223,29 +249,45 @@ namespace PlanA.Migrations
                 {
                     b.HasOne("PlanA.Models.Item", null)
                         .WithMany()
-                        .HasForeignKey("ItemsItemId")
+                        .HasForeignKey("ItemsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PlanA.Models.Order", null)
                         .WithMany()
-                        .HasForeignKey("OrdersOrderId")
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OperationProcess", b =>
+                {
+                    b.HasOne("PlanA.Models.Operation", null)
+                        .WithMany()
+                        .HasForeignKey("OperationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PlanA.Models.Process", null)
+                        .WithMany()
+                        .HasForeignKey("ProcessesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("PlanA.Models.Item", b =>
                 {
+                    b.HasOne("PlanA.Models.Asset", "Asset")
+                        .WithOne("Item")
+                        .HasForeignKey("PlanA.Models.Item", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PlanA.Models.Item", null)
                         .WithMany("SubItems")
-                        .HasForeignKey("ItemId1");
-                });
+                        .HasForeignKey("ItemId");
 
-            modelBuilder.Entity("PlanA.Models.Operation", b =>
-                {
-                    b.HasOne("PlanA.Models.Process", null)
-                        .WithMany("Operations")
-                        .HasForeignKey("ProcessId");
+                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("PlanA.Models.Operation_items", b =>
@@ -290,7 +332,7 @@ namespace PlanA.Migrations
                 {
                     b.HasOne("PlanA.Models.Process", null)
                         .WithMany("SubProcesses")
-                        .HasForeignKey("ProcessId1");
+                        .HasForeignKey("ProcessId");
                 });
 
             modelBuilder.Entity("PlanA.Models.Sub_items", b =>
@@ -331,6 +373,11 @@ namespace PlanA.Migrations
                     b.Navigation("SubProcess");
                 });
 
+            modelBuilder.Entity("PlanA.Models.Asset", b =>
+                {
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("PlanA.Models.Item", b =>
                 {
                     b.Navigation("ItemSubitems");
@@ -355,8 +402,6 @@ namespace PlanA.Migrations
             modelBuilder.Entity("PlanA.Models.Process", b =>
                 {
                     b.Navigation("ItemSubProcesses");
-
-                    b.Navigation("Operations");
 
                     b.Navigation("SubProcesses");
                 });
