@@ -1,0 +1,23 @@
+﻿@model PlanA.Models.Order_items
+
+
+@{
+    ViewData["Title"] = "Добавление нового заказа";
+}
+
+<div class="text-center">
+    <form asp-action="CreateOrder" asp-controller="Work">
+        <p>
+            
+            <label asp-for="Order.Name">Имя</label>
+            <input type="text" asp-for="Order.Name" />
+            <br/>
+
+            <label asp-for="Quantity">Количество</label>
+            <input type="text" asp-for="Quantity"/>
+        </p>
+        <p>
+            <input type="submit" value="Отправить" />
+        </p>
+    </form>
+</div>
