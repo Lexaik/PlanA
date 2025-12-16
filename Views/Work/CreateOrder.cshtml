@@ -1,5 +1,4 @@
-﻿@model PlanA.Models.Order_items
-
+﻿@model PlanA.Models.Order
 
 @{
     ViewData["Title"] = "Добавление нового заказа";
@@ -8,16 +7,16 @@
 <div class="text-center">
     <form asp-action="CreateOrder" asp-controller="Work">
         <p>
-            
-            <label asp-for="Order.Name">Имя</label>
-            <input type="text" asp-for="Order.Name" />
+            <label asp-for="Name">Название заказа</label>
+            <input type="text" asp-for="Name" />
             <br/>
-
-            <label asp-for="Quantity">Количество</label>
-            <input type="text" asp-for="Quantity"/>
+            <label asp-for="Items">Изделие</label>
+            <input type="text" asp-for="Items"/>
+            <label asp-for="OrderItems">Количество</label>
+            <input type="text" asp-for="OrderItems"/>
         </p>
         <p>
-            <input type="submit" value="Отправить" />
+            <input type="submit" value="Сохранить" />
         </p>
     </form>
 </div>
