@@ -1,4 +1,4 @@
-﻿@model PlanA.Models.Order
+﻿@model PlanA.ViewModels.CreateOrderViewModel
 
 @{
     ViewData["Title"] = "Добавление нового заказа";
@@ -7,16 +7,42 @@
 <div class="text-center">
     <form asp-action="CreateOrder" asp-controller="Work">
         <p>
-            <label asp-for="Name">Название заказа</label>
-            <input type="text" asp-for="Name" />
-            <br/>
-            <label asp-for="Items">Изделие</label>
-            <input type="text" asp-for="Items"/>
-            <label asp-for="OrderItems">Количество</label>
-            <input type="text" asp-for="OrderItems"/>
-        </p>
-        <p>
-            <input type="submit" value="Сохранить" />
-        </p>
+        <label asp-for="Name">Название заказа</label>
+        <input type="text" asp-for="Name"/>
+        <br/>
+        <h4>Выберите изделия:</h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Выбрать</th>
+                <th>Изделие</th>
+                <th>Количество</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.SelectedItems) {
+                <tr>
+                    <td><input type="checkbox" asp-for="SelectedItems" value="@item.IsSelected"/>
+                        <input type="hidden" asp-for="SelectedItems" value="@item.Id"/>
+                        <input type="hidden" asp-for="SelectedItems" value="@item.Name"/>
+                    </td>
+                    <td>@item.Name</td>
+                    <td><input type="number" asp-for="@item.Quantity" class="form-control" min="0" value="0"/></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Добавить заказ</button>
+        </div>
     </form>
+    @section Scripts {
+        <script>
+            document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => { const quantityInput = checkbox.closest('tr').querySelector('input[type="number"]');
+                checkbox.addEventListener('change', () => { quantityInput.disabled = !checkbox.checked; 
+                if (!checkbox.checked) { quantityInput.value = 0; } }); 
+                quantityInput.disabled = !checkbox.checked; 
+            });
+        </script>
+    }
 </div>
