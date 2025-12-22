@@ -22,7 +22,11 @@
             <tbody>
             @foreach (var item in Model.SelectedItems) {
                 <tr>
-                    <td><input type="checkbox" asp-for="SelectedItems" value="@item.IsSelected"/>
+                    <td><input type="checkbox" 
+                               name="item.IsSelected" 
+                               id="SelectedItems_@item.IsSelected" 
+                               value="true" 
+                               @(item.IsSelected ? "checked" : "") />
                         <input type="hidden" asp-for="SelectedItems" value="@item.Id"/>
                         <input type="hidden" asp-for="SelectedItems" value="@item.Name"/>
                     </td>
@@ -32,9 +36,9 @@
             }
             </tbody>
         </table>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Добавить заказ</button>
-        </div>
+        <p>
+            <input type="submit" value="Добавить заказ"/>
+        </p>
     </form>
     @section Scripts {
         <script>

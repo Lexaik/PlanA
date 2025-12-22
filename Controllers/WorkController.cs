@@ -29,25 +29,26 @@ public class WorkController : Controller {
         await db.SaveChangesAsync();
         return RedirectToAction("AssetsView");
     }
+    
     public async Task<IActionResult> OrdersView() {
         return View(await db.Orders.Include(oi => oi.OrderItems).ThenInclude(i => i.Item).ToListAsync());
     }
 
     public async Task<IActionResult> CreateOrder() {
         var items = await db.Assets.Include(i => i.Item).ToListAsync();
-        var view_model = new CreateOrderViewModel() {
+        var view_model = await GetCreateOrderViewModel(); /*new CreateOrderViewModel() {
             SelectedItems = items.Select(i => new SelectedItemViewModel {
                 Id = i.Id,
                 Name = i.Item.Name,
                 Quantity = 1,
                 IsSelected = false
             }).ToList()
-        };
+    };*/
         return View(view_model);
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateOrder(CreateOrderViewModel viewModel)
+    /*public async Task<IActionResult> CreateOrder(CreateOrderViewModel viewModel)
     {
         if (ModelState.IsValid) {
             try {
@@ -86,5 +87,94 @@ public class WorkController : Controller {
             }
         }
         return View(viewModel);
+    }*/
+    public async Task<IActionResult> CreateOrder(CreateOrderViewModel viewModel) {
+        if (ModelState.IsValid) {
+            try {
+                var selectedItems = viewModel.SelectedItems
+                    .Where(si => si.IsSelected && si.Quantity > 0)
+                    .ToList();
+                if (!selectedItems.Any()) {
+                    ModelState.AddModelError("", "Выберите хотя бы один товар с количеством больше 0");
+                    viewModel = await GetCreateOrderViewModel(viewModel);
+                    return View(viewModel);
+                }
+                var order = new Order {
+                    Name = viewModel.Name,
+                    
+                };
+                foreach (var selectedItem in selectedItems) {
+                    var item = await db.Assets.FindAsync(selectedItem.Id);
+                    if (item == null) {
+                        ModelState.AddModelError("", $"Товар с ID {selectedItem.Id} не найден");
+                        viewModel = await GetCreateOrderViewModel(viewModel);
+                        return View(viewModel);
+                    }
+                    if (item.Quantity < selectedItem.Quantity) {
+                        ModelState.AddModelError("", 
+                            $"Недостаточно товара '{item.Item.Name}' на складе. Доступно: {item.Quantity}");
+                        viewModel = await GetCreateOrderViewModel(viewModel);
+                        return View(viewModel);
+                    }
+                    var orderItem = new Order_items() {
+                        ItemId = selectedItem.Id,
+                        Quantity = selectedItem.Quantity,
+                        Order = order
+                    };
+                    item.Quantity -= selectedItem.Quantity;
+                    order.OrderItems.Add(orderItem);
+                }
+                db.Orders.Add(order);
+                await db.SaveChangesAsync();
+                return RedirectToAction("OrderDetails", new { id = order.Id });
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("", $"Ошибка при сохранении заказа: {ex.Message}");
+                viewModel = await GetCreateOrderViewModel(viewModel);
+                return View(viewModel);
+            }
+        }
+        viewModel = await GetCreateOrderViewModel(viewModel);
+        return View(viewModel);
+    }
+    private async Task<CreateOrderViewModel> GetCreateOrderViewModel(CreateOrderViewModel existingViewModel = null) {
+        var items = await db.Assets.ToListAsync();
+        var viewModel = existingViewModel ?? new CreateOrderViewModel();
+        if (viewModel.SelectedItems == null || !viewModel.SelectedItems.Any()) {
+            viewModel.SelectedItems = items.Select(i => new SelectedItemViewModel {
+                Id = i.Id,
+                Name = i.Item.Name,
+                Quantity = 0,
+                IsSelected = false
+            }).ToList();
+        }
+        else {
+            foreach (var selectedItem in viewModel.SelectedItems) {
+                var item = items.FirstOrDefault(i => i.Id == selectedItem.Id);
+                if (item != null) {
+                    selectedItem.Name = item.Item.Name;
+                }
+            }
+        }
+        
+        return viewModel;
+    }
+    public async Task<IActionResult> OrderDetails(int id) {
+        var order = await db.Orders
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Item)
+            .FirstOrDefaultAsync(o => o.Id == id);
+        if (order == null) {
+            return NotFound();
+        }
+
+        return View(order);
+    }
+    public async Task<IActionResult> OrdersList() {
+        var orders = await db.Orders
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Item)
+            .ToListAsync();
+        return View(orders);
     }
 }
