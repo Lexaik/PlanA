@@ -4,49 +4,184 @@
     ViewData["Title"] = "Добавление нового заказа";
 }
 
-<div class="text-center">
-    <form asp-action="CreateOrder" asp-controller="Work">
-        <p>
-        <label asp-for="Name">Название заказа</label>
-        <input type="text" asp-for="Name"/>
-        <br/>
-        <h4>Выберите изделия:</h4>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Выбрать</th>
-                <th>Изделие</th>
-                <th>Количество</th>
-            </tr>
+<h2>Создание нового заказа</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
+<form asp-action="CreateOrder" method="post" id="orderForm">
+    @Html.AntiForgeryToken()
+    
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="form-label">Название заказа *</label>
+        <input asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <h4 class="mt-4 mb-3">Выберите изделия:</h4>
+    
+    @if (Model.SelectedItems != null && Model.SelectedItems.Any())
+    {
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th style="width: 50px;">Выбрать</th>
+                    <th>Наименование</th>
+                    <th style="width: 150px;">Количество</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model.SelectedItems) {
-                <tr>
-                    <td><input type="checkbox" 
-                               name="item.IsSelected" 
-                               id="SelectedItems_@item.IsSelected" 
-                               value="true" 
-                               @(item.IsSelected ? "checked" : "") />
-                        <input type="hidden" asp-for="SelectedItems" value="@item.Id"/>
-                        <input type="hidden" asp-for="SelectedItems" value="@item.Name"/>
-                    </td>
-                    <td>@item.Name</td>
-                    <td><input type="number" asp-for="@item.Quantity" class="form-control" min="0" value="0"/></td>
-                </tr>
-            }
+                @for (int i = 0; i < Model.SelectedItems.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <!-- Чекбокс для выбора -->
+                            <input type="checkbox" 
+                                   asp-for="@Model.SelectedItems[i].IsSelected" 
+                                   class="item-checkbox" />
+                            
+                            <!-- Скрытые поля для ID и названия -->
+                            <input type="hidden" asp-for="@Model.SelectedItems[i].Id" />
+                            <input type="hidden" asp-for="@Model.SelectedItems[i].Name" />
+                        </td>
+                        <td>
+                            <label for="SelectedItems_@(i)__IsSelected">
+                                @Model.SelectedItems[i].Name
+                            </label>
+                        </td>
+                        <td>
+                            <!-- Поле для количества -->
+                            <input type="number" 
+                                   asp-for="@Model.SelectedItems[i].Quantity" 
+                                   class="form-control quantity-input" 
+                                   min="0" 
+                                   value="@Model.SelectedItems[i].Quantity"
+                                   data-item-id="@Model.SelectedItems[i].Id" />
+                            <span asp-validation-for="@Model.SelectedItems[i].Quantity" class="text-danger small"></span>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
-        <p>
-            <input type="submit" value="Добавить заказ"/>
-        </p>
-    </form>
-    @section Scripts {
-        <script>
-            document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => { const quantityInput = checkbox.closest('tr').querySelector('input[type="number"]');
-                checkbox.addEventListener('change', () => { quantityInput.disabled = !checkbox.checked; 
-                if (!checkbox.checked) { quantityInput.value = 0; } }); 
-                quantityInput.disabled = !checkbox.checked; 
-            });
-        </script>
+        
+        <div class="alert alert-info">
+            <p>Выбрано товаров: <span id="selectedCount">0</span></p>
+            <p>Общее количество: <span id="totalQuantity">0</span></p>
+        </div>
     }
-</div>
+    else
+    {
+        <div class="alert alert-warning">
+            Нет доступных товаров для заказа.
+        </div>
+    }
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">
+            <i class="bi bi-check-circle"></i> Создать заказ
+        </button>
+        <a asp-action="OrdersList" class="btn btn-secondary btn-lg">
+            <i class="bi bi-list"></i> К списку заказов
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Функция для обновления состояния полей ввода
+            function updateQuantityInputs() {
+                $('.item-checkbox').each(function() {
+                    var checkbox = $(this);
+                    var row = checkbox.closest('tr');
+                    var quantityInput = row.find('.quantity-input');
+                    
+                    // Включаем/выключаем поле количества
+                    quantityInput.prop('disabled', !checkbox.prop('checked'));
+                    
+                    // Если чекбокс не выбран, сбрасываем количество
+                    if (!checkbox.prop('checked')) {
+                        quantityInput.val('0');
+                    }
+                });
+                updateSummary();
+            }
+
+            // Функция для обновления сводки
+            function updateSummary() {
+                var selectedCount = 0;
+                var totalQuantity = 0;
+                
+                $('.item-checkbox:checked').each(function() {
+                    selectedCount++;
+                    var row = $(this).closest('tr');
+                    var quantity = parseInt(row.find('.quantity-input').val()) || 0;
+                    totalQuantity += quantity;
+                });
+                
+                $('#selectedCount').text(selectedCount);
+                $('#totalQuantity').text(totalQuantity);
+            }
+
+            // Обработчик изменения чекбоксов
+            $('.item-checkbox').change(function() {
+                updateQuantityInputs();
+            });
+
+            // Обработчик изменения количества
+            $('.quantity-input').change(function() {
+                updateSummary();
+            });
+
+            // Валидация формы перед отправкой
+            $('#orderForm').submit(function(e) {
+                var hasSelectedItems = $('.item-checkbox:checked').length > 0;
+                var hasValidQuantities = true;
+                
+                $('.item-checkbox:checked').each(function() {
+                    var row = $(this).closest('tr');
+                    var quantity = parseInt(row.find('.quantity-input').val()) || 0;
+                    if (quantity <= 0) {
+                        hasValidQuantities = false;
+                        row.find('.quantity-input').addClass('is-invalid');
+                    }
+                });
+                
+                if (!hasSelectedItems) {
+                    e.preventDefault();
+                    alert('Выберите хотя бы один товар!');
+                    return false;
+                }
+                
+                if (!hasValidQuantities) {
+                    e.preventDefault();
+                    alert('Для выбранных товаров укажите количество больше 0!');
+                    return false;
+                }
+                
+                return true;
+            });
+
+            // Инициализация состояний при загрузке
+            updateQuantityInputs();
+        });
+    </script>
+    
+    <style>
+        .quantity-input:disabled {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+    </style>
+}
