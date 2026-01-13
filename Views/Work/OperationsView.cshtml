@@ -1,0 +1,20 @@
+﻿@model IEnumerable<PlanA.Models.Operation>
+
+@{
+    ViewData["Title"] = "Перечень операций";
+}
+
+<div class="text-center">
+    <p><a asp-action="CreateOperation">Добавить технологическую операцию</a></p>
+    <table class="table">
+        <tr><th>Название</th>
+            <th>Длительность</th>
+        </tr>
+        @foreach (var oper in Model) {
+            <tr>
+                <td>@oper.Name</td>
+                <td>@oper.Duration</td>
+            </tr>
+        }
+    </table>
+</div>

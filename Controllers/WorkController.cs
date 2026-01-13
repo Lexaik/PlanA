@@ -177,4 +177,18 @@ public class WorkController : Controller {
             .ToListAsync();
         return View(orders);
     }
+    
+    public async Task<IActionResult> OperationsView() {
+        return View(await db.Operations.ToListAsync());
+    }
+
+    public IActionResult CreateOperation() {
+        return View();
+    }
+    [HttpPost]
+    public async Task<IActionResult> CreateOperation(Operation oper) {
+        db.Operations.Add(oper);
+        await db.SaveChangesAsync();
+        return RedirectToAction("OperationsView");
+    }
 }
