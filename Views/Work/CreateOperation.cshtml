@@ -1,0 +1,23 @@
+﻿@model PlanA.Models.Operation
+
+
+@{
+    ViewData["Title"] = "Добавление новой технологической операции";
+}
+
+<div class="text-center">
+    <form asp-action="CreateOperation" asp-controller="Work">
+        <p>
+            
+            <label asp-for="Name">Наименование</label>
+            <input type="text" asp-for="Name" />
+            <br/>
+
+            <label asp-for="Duration">Длительность</label>
+            <input type="text" asp-for="Duration"/>
+        </p>
+        <p>
+            <input type="submit" value="Отправить" />
+        </p>
+    </form>
+</div>

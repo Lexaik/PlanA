@@ -1,0 +1,19 @@
+﻿@model IEnumerable<PlanA.Models.Process>
+
+@{
+    ViewData["Title"] = "Технологические процессы";
+}
+
+<div class="text-center">
+    <table class="table">
+        <tr><th>Название</th>
+            <th>Длительность</th>
+        </tr>
+        @foreach (var process in Model) {
+            <tr>
+                <td>@process.Name</td>
+                <td>@process.Duration</td>
+            </tr>
+        }
+    </table>
+</div>

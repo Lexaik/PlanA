@@ -191,4 +191,9 @@ public class WorkController : Controller {
         await db.SaveChangesAsync();
         return RedirectToAction("OperationsView");
     }
+    
+    public async Task<IActionResult> ProcessesView() {
+        return View(await db.Processes.ToListAsync());
+    }
+    
 }
