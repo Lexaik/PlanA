@@ -196,4 +196,8 @@ public class WorkController : Controller {
         return View(await db.Processes.ToListAsync());
     }
     
+    public async Task<IActionResult> LoadingView() {
+        
+        return View();
+    }
 }
