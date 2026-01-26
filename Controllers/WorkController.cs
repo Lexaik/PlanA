@@ -197,7 +197,9 @@ public class WorkController : Controller {
     }
     
     public async Task<IActionResult> LoadingView() {
-        
-        return View();
+        var orders = await db.Orders
+            .Where(o => o.IsActive == true)
+            .ToListAsync();
+        return View(orders);
     }
 }

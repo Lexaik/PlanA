@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PlanA.ViewModels.LoadingViewModel>
+﻿@model IEnumerable<PlanA.Models.Order>
 
 @{
     ViewData["Title"] = "Загрузка производства";
@@ -7,13 +7,31 @@
 <div class="text-center">
     <table class="table">
         <tr><th>Название</th>
-            <th>Единицы</th>
+            <th>@DateTime.Now.AddDays(-2).ToString("M")</th>
+            <th>@DateTime.Now.AddDays(-1).ToString("M")</th>
+            <th>@DateTime.Now.ToString("M")</th>
+            <th>@DateTime.Now.AddDays(1).ToString("M")</th>
+            <th>@DateTime.Now.AddDays(2).ToString("M")</th>
+            <th>@DateTime.Now.AddDays(3).ToString("M")</th>
+            <th>@DateTime.Now.AddDays(4).ToString("M")</th>
+            <th>@DateTime.Now.AddDays(5).ToString("M")</th>
+            <th>@DateTime.Now.AddDays(6).ToString("M")</th>
+            <th>@DateTime.Now.AddDays(7).ToString("M")</th>
         </tr>
         @foreach (var order in Model) {
             <tr>
                 <td>@order.Name</td>
-                <td>111</td>
+                <td @{if(order.ActualDateStart<DateTime.Now.AddDays(-2) && DateTime.Now.AddDays(-2)<@order.PlanDateEnd) background="red"}></td>
+                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(-1)"></td>
+                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now"></td>
+                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(1)"></td>
+                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(2)"></td>
+                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(3)"></td>
+                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(4)"></td>
+                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(5)"></td>
+                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(6)"></td>
+                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(7)"></td>
             </tr>
-        }
+}
     </table>
 </div>
