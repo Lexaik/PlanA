@@ -1,7 +1,14 @@
-﻿@model IEnumerable<PlanA.Models.Order>
+﻿@using PlanA.Models
+@model IEnumerable<PlanA.Models.Order>
 
 @{
     ViewData["Title"] = "Загрузка производства";
+    // В коде C# определяем функцию
+    string GetColor(Order order, DateTime today) {
+        var stock = "white";
+        if (order.ActualDateStart < today && today < order.PlanDateEnd) stock = "yellow";
+        return stock;
+    }
 }
 
 <div class="text-center">
@@ -21,16 +28,16 @@
         @foreach (var order in Model) {
             <tr>
                 <td>@order.Name</td>
-                <td @{if(order.ActualDateStart<DateTime.Now.AddDays(-2) && DateTime.Now.AddDays(-2)<@order.PlanDateEnd) background="red"}></td>
-                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(-1)"></td>
-                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now"></td>
-                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(1)"></td>
-                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(2)"></td>
-                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(3)"></td>
-                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(4)"></td>
-                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(5)"></td>
-                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(6)"></td>
-                <td type="number" min="@order.ActualDateStart" max="@order.PlanDateEnd" value="@DateTime.Now.AddDays(7)"></td>
+                <td style="background-color: @GetColor(order, DateTime.Now.AddDays(-2));"></td>
+                <td style="background-color: @GetColor(order, DateTime.Now.AddDays(-1));"></td>
+                <td style="background-color: @GetColor(order, DateTime.Now);"></td>
+                <td style="background-color: @GetColor(order, DateTime.Now.AddDays(1));"></td>
+                <td style="background-color: @GetColor(order, DateTime.Now.AddDays(2));"></td>
+                <td style="background-color: @GetColor(order, DateTime.Now.AddDays(3));"></td>
+                <td style="background-color: @GetColor(order, DateTime.Now.AddDays(4));"></td>
+                <td style="background-color: @GetColor(order, DateTime.Now.AddDays(5));"></td>
+                <td style="background-color: @GetColor(order, DateTime.Now.AddDays(6));"></td>
+                <td style="background-color: @GetColor(order, DateTime.Now.AddDays(7));"></td>
             </tr>
 }
     </table>
