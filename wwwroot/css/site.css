@@ -24,7 +24,7 @@ body {
 }
 
 .nav-tabs-custom .nav-link {
-  color: rgba(255,255,255,0.9);
+  color: red;//rgba(255,255,255,0.9);
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.3);
   margin-right: 0.5rem;
@@ -40,7 +40,7 @@ body {
 
 .nav-tabs-custom .nav-link.active {
   background: white;
-  color: #6a11cb;
+  color: red;//#6a11cb;
   font-weight: 600;
   border-color: white;
 }

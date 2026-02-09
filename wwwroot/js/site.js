@@ -1,8 +1,8 @@
 ﻿class BootstrapRouteManager {
             constructor() {
-                this.currentRoute = 'Index';
+                this.currentRoute = 'documents';
                 this.selectedItem = null;
-                this.footer = document.querySelector('.footer');
+                this.footer = document.querySelector('.footer-fixed');
                 this.init();
             }
 
@@ -66,7 +66,7 @@
 
             toggleFooterVisibility() {
                 // Скрываем футер только на вкладке "Настройки"
-                if (this.currentRoute === 'Index' || this.currentRoute === 'LoadingView' || this.currentRoute === 'ProcessView') {
+                if (this.currentRoute === 'settings') {
                     this.footer.classList.add('hidden');
                 } else {
                     this.footer.classList.remove('hidden');
@@ -183,20 +183,62 @@
 
             getRouteName(route) {
                 const names = {
-                    'Index': 'Index',
                     'documents': 'Документы',
                     'users': 'Пользователи',
                     'settings': 'Настройки',
                     'reports': 'Отчеты'
-                    'loading': 'Загрузка'
                 };
                 return names[route] || route;
             }
+            
         }
+        
+        // Функция для определения активной навигационной ссылки
+            function setActiveNavLink() {
+                const currentPath = window.location.pathname.toLowerCase();
+                const navLinks = document.querySelectorAll('.nav-link');
+                
+                // Удаляем класс active у всех ссылок
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Ищем и активируем подходящую ссылку
+                navLinks.forEach(link => {
+                    // Получаем путь из атрибутов asp-controller и asp-action
+                    const controller = link.getAttribute('asp-controller') || '';
+                    const action = link.getAttribute('asp-action') || '';
+                    
+                    // Формируем ожидаемый путь
+                    const expectedPath = '/' + (controller ? controller + '/' : '') + 
+                                        (action ? action : '');
+                    
+                    // Для Home/Index - особый случай
+                    if (controller === 'Home' && action === 'Index') {
+                        if (currentPath === '/' || currentPath === '/home' || currentPath === '/home/index') {
+                            link.classList.add('active');
+                        }
+                    }
+                    // Проверяем совпадение пути
+                    else if (expectedPath && currentPath.startsWith(expectedPath.toLowerCase())) {
+                        link.classList.add('active');
+                    }
+                    
+                    // Дополнительная проверка для ссылок с href (если Razor их уже преобразовал)
+                    const href = link.getAttribute('href');
+                    if (href && currentPath.startsWith(href.toLowerCase())) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            
+            // Запускаем при загрузке страницы и при изменении истории (SPA навигации)
+            document.addEventListener('DOMContentLoaded', setActiveNavLink);
+            window.addEventListener('popstate', setActiveNavLink);
 
         // Инициализация при загрузке страницы
-        document.addEventListener('DOMContentLoaded', () => {
-            new BootstrapRouteManager();
+        /*document.addEventListener('DOMContentLoaded', () => {
+            new BootstrapRouteManager();*/
             
             // Пример обработки модальных окон
             const deleteModal = document.getElementById('deleteModal');
