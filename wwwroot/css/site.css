@@ -24,13 +24,13 @@ body {
 }
 
 .nav-tabs-custom .nav-link {
-  color: red;//rgba(255,255,255,0.9);
+  color: rgba(255,255,255,0.9);
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.3);
   margin-right: 0.5rem;
   border-radius: 6px;
   padding: 0.5rem 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease 0.05s !important;
 }
 
 .nav-tabs-custom .nav-link:hover {
@@ -40,9 +40,20 @@ body {
 
 .nav-tabs-custom .nav-link.active {
   background: white;
-  color: red;//#6a11cb;
+  color: #6a11cb;
   font-weight: 600;
   border-color: white;
+  transition: all 0.1s ease !important;
+}
+
+.nav-tabs-custom .nav-link:active {
+  background: white !important;
+  color: #6a11cb !important;
+  border-color: white !important;
+}
+
+.nav-tabs-custom .nav-link:focus {
+  outline: none;
 }
 
 .content-section {
