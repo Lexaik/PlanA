@@ -1,26 +1,58 @@
 :root {
   --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
   --footer-bg: #2c3e50;
-  --card-hover-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
+/* Header стили */
 .navbar-custom {
   background: var(--primary-gradient);
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
+  padding: 0.5rem 0;
+}
+
+.navbar-brand-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+  white-space: nowrap;
 }
 
 .nav-tabs-custom {
   border-bottom: none;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.25rem;
+  scrollbar-width: none; /* Firefox */
+}
+
+.nav-tabs-custom::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.nav-tabs-custom .nav-item {
+  flex-shrink: 0;
 }
 
 .nav-tabs-custom .nav-link {
@@ -29,8 +61,24 @@ body {
   border: 1px solid rgba(255,255,255,0.3);
   margin-right: 0.5rem;
   border-radius: 6px;
-  padding: 0.5rem 1rem;
-  transition: all 0.3s ease 0.05s !important;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  min-height: 40px;
+}
+
+/* Иконки и текст в навигации */
+.nav-tabs-custom .nav-link i {
+  font-size: 1.1em;
+  flex-shrink: 0;
+}
+
+.nav-tabs-custom .nav-link .nav-text {
+  margin-left: 0.5rem;
+  transition: all 0.3s ease;
 }
 
 .nav-tabs-custom .nav-link:hover {
@@ -43,64 +91,80 @@ body {
   color: #6a11cb;
   font-weight: 600;
   border-color: white;
-  transition: all 0.1s ease !important;
 }
 
-.nav-tabs-custom .nav-link:active {
-  background: white !important;
-  color: #6a11cb !important;
-  border-color: white !important;
+/* Адаптивность для навигации */
+@media (max-width: 576px) {
+  .nav-tabs-custom .nav-link {
+    padding: 0.5rem 0.75rem;
+    margin-right: 0.375rem;
+  }
+
+  .nav-tabs-custom .nav-link .nav-text {
+    display: none; /* На очень маленьких экранах скрываем текст */
+  }
+
+  .nav-tabs-custom .nav-link i {
+    margin: 0;
+  }
 }
 
-.nav-tabs-custom .nav-link:focus {
-  outline: none;
+@media (min-width: 577px) and (max-width: 768px) {
+  .nav-tabs-custom .nav-link .nav-text {
+    display: inline-block; /* Показываем текст на средних экранах */
+  }
 }
 
-.content-section {
-  display: none;
-  animation: fadeIn 0.5s ease;
+/* Responsive header для очень маленьких экранов */
+@media (max-width: 400px) {
+  .navbar-brand {
+    font-size: 1rem;
+  }
+
+  .nav-tabs-custom .nav-link {
+    padding: 0.4rem;
+    min-width: 40px;
+  }
 }
 
-.content-section.active {
-  display: block;
+.content-wrapper {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
 }
 
-.item-card {
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid #dee2e6;
+.scrollable-content {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 20px;
+  background-color: #f0f0f0;
 }
 
-.item-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--card-hover-shadow);
-  border-color: #2575fc;
+.content {
+  width: 150vw;
+  height: 150vh;
+  background: repeating-linear-gradient(
+          45deg,
+          #e0e0e0,
+          #e0e0e0 10px,
+          #f5f5f5 10px,
+          #f5f5f5 20px
+  )
 }
 
-.item-card.selected {
-  border-color: #2575fc;
-  background-color: #f0f7ff;
-}
-
-.selection-info {
-  background: #e8f4ff;
-  border-left: 4px solid #2575fc;
-  display: none;
-}
-
-.selection-info.show {
-  display: block;
-}
-
+/* Footer стили */
 .footer-fixed {
   background: var(--footer-bg);
-  padding: 1rem 0;
+  padding: 0.75rem 0;
   position: sticky;
   bottom: 0;
   box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
   opacity: 1;
   transform: translateY(0);
+  flex-shrink: 0;
+  z-index: 100;
 }
 
 .footer-fixed.hidden {
@@ -112,14 +176,48 @@ body {
   box-shadow: none;
 }
 
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 0.5rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.action-buttons::-webkit-scrollbar {
+  display: none;
+}
+
 .action-btn {
-  min-width: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   font-weight: 600;
   transition: all 0.3s ease;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 6px;
+  flex-shrink: 0;
+  min-height: 48px;
+  min-width: 48px; /* Минимальный размер для касания */
+}
+
+/* Иконки и текст в кнопках футера */
+.action-btn i {
+  font-size: 1.1em;
+  flex-shrink: 0;
+}
+
+.action-btn .btn-text {
+  margin-left: 0.25rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .action-btn:disabled {
@@ -133,47 +231,87 @@ body {
 
 .btn-create {
   background: linear-gradient(135deg, #28a745, #218838);
-  border: none;
 }
 
 .btn-edit {
   background: linear-gradient(135deg, #ffc107, #e0a800);
-  border: none;
   color: #212529;
 }
 
 .btn-copy {
   background: linear-gradient(135deg, #17a2b8, #138496);
-  border: none;
 }
 
 .btn-delete {
   background: linear-gradient(135deg, #dc3545, #c82333);
-  border: none;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* Адаптивность для футера */
+@media (max-width: 576px) {
+  .footer-fixed {
+    padding: 0.5rem 0;
+  }
 
-@media (max-width: 768px) {
+  .action-buttons {
+    gap: 0.375rem;
+    padding: 0 0.375rem;
+  }
+
   .action-btn {
-    width: 100%;
+    padding: 0.5rem;
+    min-width: 44px;
   }
 
-  .btn-group-responsive {
-    flex-direction: column;
-    gap: 0.5rem;
+  .action-btn .btn-text {
+    display: none; /* На маленьких экранах скрываем текст */
   }
 
-  .nav-tabs-custom {
-    flex-direction: column;
-    gap: 0.5rem;
+  .action-btn i {
+    margin: 0;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+  .action-btn .btn-text {
+    display: inline-block; /* Показываем текст на средних экранах */
+    font-size: 0.9rem;
+  }
+
+  .action-btn {
+    padding: 0.6rem 0.75rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .action-btn .btn-text {
+    display: inline-block; /* Всегда показываем текст на больших экранах */
+  }
+
+  .action-btn {
+    min-width: 140px;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .action-buttons {
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 360px) {
+  .action-btn {
+    min-width: 42px;
+    min-height: 42px;
+    padding: 0.4rem;
   }
 
   .nav-tabs-custom .nav-link {
-    margin-right: 0;
-    text-align: center;
+    min-width: 38px;
+    min-height: 38px;
   }
+}
+
+:in-range {
+  background: green;
 }

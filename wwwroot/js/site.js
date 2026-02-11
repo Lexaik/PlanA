@@ -1,60 +1,71 @@
-﻿document.addEventListener('DOMContentLoaded', function() {
-        const navLinks = document.querySelectorAll('.nav-tabs-custom .nav-link[data-route]');
+﻿function adaptLayout() {
+        const headerNav = document.querySelector('.nav-tabs-custom');
+        const footerButtons = document.querySelector('.action-buttons');
+        const screenWidth = window.innerWidth;
         
-        // Функция установки активной ссылки
-        function setActiveLink(linkToActivate) {
-            // Быстро убираем active со всех, кроме той, которую хотим активировать
-            navLinks.forEach(link => {
-                if (link !== linkToActivate) {
-                    link.classList.remove('active');
-                }
+        // Для header
+        if (headerNav) {
+            const navItems = headerNav.querySelectorAll('.nav-item');
+            const containerWidth = headerNav.clientWidth;
+            let totalWidth = 0;
+            
+            navItems.forEach(item => {
+                totalWidth += item.offsetWidth;
             });
             
-            // Активируем нужную ссылку
-            if (linkToActivate) {
-                linkToActivate.classList.add('active');
+            // Если элементы не помещаются, скрываем текст
+            if (totalWidth > containerWidth) {
+                navItems.forEach(item => {
+                    const navText = item.querySelector('.nav-text');
+                    if (navText) {
+                        navText.style.display = 'none';
+                    }
+                });
+            } else if (screenWidth >= 577) {
+                // Если помещаются и экран не очень маленький, показываем текст
+                navItems.forEach(item => {
+                    const navText = item.querySelector('.nav-text');
+                    if (navText) {
+                        navText.style.display = 'inline-block';
+                    }
+                });
             }
         }
         
-        // Обработчики событий
-        navLinks.forEach(link => {
-            let timeoutId = null;
+        // Для footer
+        if (footerButtons) {
+            const actionBtns = footerButtons.querySelectorAll('.action-btn');
+            const containerWidth = footerButtons.clientWidth;
+            let totalWidth = 0;
             
-            link.addEventListener('mousedown', function() {
-                // Немедленно активируем нажатую ссылку
-                setActiveLink(this);
-                
-                // Очищаем предыдущий таймаут, если есть
-                if (timeoutId) clearTimeout(timeoutId);
+            actionBtns.forEach(btn => {
+                totalWidth += btn.offsetWidth;
             });
             
-            link.addEventListener('click', function() {
-                // При клике ничего не делаем - пусть страница переходит
-                // Активное состояние установится после загрузки новой страницы
-            });
-        });
-        
-        // Функция установки активной ссылки из URL
-        function setActiveFromURL() {
-            const currentPath = window.location.pathname.toLowerCase();
-            const pathSegments = currentPath.split('/').filter(s => s);
-            const currentRoute = pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : 'index';
-            
-            // Находим и активируем соответствующую ссылку
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                
-                const route = link.getAttribute('data-route');
-                if (route === currentRoute) {
-                    // Небольшая задержка для плавности
-                    setTimeout(() => {
-                        link.classList.add('active');
-                    }, 10);
-                }
-            });
+            // Если кнопки не помещаются, скрываем текст
+            if (totalWidth > containerWidth) {
+                actionBtns.forEach(btn => {
+                    const btnText = btn.querySelector('.btn-text');
+                    if (btnText) {
+                        btnText.style.display = 'none';
+                    }
+                });
+            } else if (screenWidth >= 577) {
+                // Если помещаются и экран не очень маленький, показываем текст
+                actionBtns.forEach(btn => {
+                    const btnText = btn.querySelector('.btn-text');
+                    if (btnText) {
+                        btnText.style.display = 'inline-block';
+                    }
+                });
+            }
         }
-        
-        // Инициализация
-        setTimeout(setActiveFromURL, 100);
-        window.addEventListener('popstate', setActiveFromURL);
-    });
+    }
+    
+    // Запускаем при загрузке и изменении размера окна
+    document.addEventListener('DOMContentLoaded', adaptLayout);
+    window.addEventListener('resize', adaptLayout);
+    window.addEventListener('load', adaptLayout);
+    
+    // Также запускаем с небольшой задержкой для полной загрузки DOM
+    setTimeout(adaptLayout, 100);
