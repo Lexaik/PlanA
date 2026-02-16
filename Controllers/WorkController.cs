@@ -202,4 +202,32 @@ public class WorkController : Controller {
             .ToListAsync();
         return View(orders);
     }
+    
+    public async Task<IActionResult> EmployeesView() {
+        return View(await db.Employees.Include(i => i.Person).ToListAsync());
+    }
+
+    public IActionResult CreateEmployee() {
+        return View();
+    }
+    [HttpPost]
+    public async Task<IActionResult> CreateEmployee(Employee employee) {
+        db.Employees.Add(employee);
+        await db.SaveChangesAsync();
+        return RedirectToAction("EmployeesView");
+    }
+    
+    public async Task<IActionResult> EquipmentsView() {
+        return View(await db.Equipments.ToListAsync());
+    }
+
+    public IActionResult CreateEquipment() {
+        return View();
+    }
+    [HttpPost]
+    public async Task<IActionResult> CreateEquipment(Equipment equipment) {
+        db.Equipments.Add(equipment);
+        await db.SaveChangesAsync();
+        return RedirectToAction("EquipmentsView");
+    }
 }

@@ -17,6 +17,21 @@ namespace PlanA.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
 
+            modelBuilder.Entity("EmployeeEquipment", b =>
+                {
+                    b.Property<int>("EmployeesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EquipmentsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("EmployeesId", "EquipmentsId");
+
+                    b.HasIndex("EquipmentsId");
+
+                    b.ToTable("EmployeeEquipment");
+                });
+
             modelBuilder.Entity("ItemOperation", b =>
                 {
                     b.Property<int>("ItemsId")
@@ -74,6 +89,47 @@ namespace PlanA.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Assets", (string)null);
+                });
+
+            modelBuilder.Entity("PlanA.Models.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("PersonId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Profession")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Salary")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("PlanA.Models.Equipment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Cost")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Equipments");
                 });
 
             modelBuilder.Entity("PlanA.Models.Item", b =>
@@ -183,6 +239,40 @@ namespace PlanA.Migrations
                     b.ToTable("Order_Items", (string)null);
                 });
 
+            modelBuilder.Entity("PlanA.Models.Person", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Patronymic")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Persons");
+                });
+
             modelBuilder.Entity("PlanA.Models.Process", b =>
                 {
                     b.Property<int>("Id")
@@ -242,6 +332,21 @@ namespace PlanA.Migrations
                     b.ToTable("Sub_Processes", (string)null);
                 });
 
+            modelBuilder.Entity("EmployeeEquipment", b =>
+                {
+                    b.HasOne("PlanA.Models.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PlanA.Models.Equipment", null)
+                        .WithMany()
+                        .HasForeignKey("EquipmentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ItemOperation", b =>
                 {
                     b.HasOne("PlanA.Models.Item", null)
@@ -285,6 +390,15 @@ namespace PlanA.Migrations
                         .HasForeignKey("ProcessesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PlanA.Models.Employee", b =>
+                {
+                    b.HasOne("PlanA.Models.Person", "Person")
+                        .WithMany("Employees")
+                        .HasForeignKey("PersonId");
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("PlanA.Models.Item", b =>
@@ -409,6 +523,11 @@ namespace PlanA.Migrations
             modelBuilder.Entity("PlanA.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("PlanA.Models.Person", b =>
+                {
+                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("PlanA.Models.Process", b =>

@@ -1,0 +1,20 @@
+﻿@model IEnumerable<PlanA.Models.Equipment>
+
+@{
+    ViewData["Title"] = "Перечень оборудования";
+}
+
+<div class="text-center">
+    <p><a asp-action="CreateEquipment">Добавить оборудование</a></p>
+    <table class="table">
+        <tr><th>Название</th>
+            <th>Стоимость</th>
+        </tr>
+        @foreach (var equipment in Model) {
+            <tr>
+                <td>@equipment.Name</td>
+                <td>@equipment.Cost</td>
+            </tr>
+        }
+    </table>
+</div>
