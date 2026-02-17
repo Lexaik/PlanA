@@ -25,6 +25,16 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" 
+                   asp-area="" asp-controller="Work" asp-action="OrdersView"
+                   data-route="work/ordersview"
+                   data-controller="Work"
+                   data-action="OrdersView">
+                    <i class="bi bi-cart-check"></i>
+                    <span class="nav-text">Заказы</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" 
                    asp-area="" asp-controller="Work" asp-action="AssetsView"
                    data-route="work/assetsview"
                    data-controller="Work"
@@ -33,14 +43,25 @@
                     <span class="nav-text">Склад</span>
                 </a>
             </li>
+            
             <li class="nav-item">
                 <a class="nav-link text-white" 
-                   asp-area="" asp-controller="Work" asp-action="OrdersView"
-                   data-route="work/ordersview"
+                   asp-area="" asp-controller="Work" asp-action="EmployeesView"
+                   data-route="work/employeesview"
                    data-controller="Work"
-                   data-action="OrdersView">
-                    <i class="bi bi-cart-check"></i>
-                    <span class="nav-text">Заказы</span>
+                   data-action="EmployeesView">
+                    <i class="bi bi-people-fill"></i>
+                    <span class="nav-text">Сотрудники</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" 
+                   asp-area="" asp-controller="Work" asp-action="EquipmentsView"
+                   data-route="work/equipmentsview"
+                   data-controller="Work"
+                   data-action="EquipmentsView">
+                    <i class="bi bi-plug"></i>
+                    <span class="nav-text">Оборудование</span>
                 </a>
             </li>
             <li class="nav-item">
