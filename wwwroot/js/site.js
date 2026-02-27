@@ -1,28 +1,4 @@
-﻿// Предварительное скрытие футера - выполняется до полной загрузки DOM
-    (function() {
-        // Создаем стиль для немедленного скрытия футера на определенных страницах
-        const currentPath = window.location.pathname.toLowerCase();
-        const path = currentPath.replace(/^\//, '');
-        
-        // Проверяем, нужно ли скрыть футер
-        const shouldHideFooter = 
-            path === '' || 
-            path === 'home' || 
-            path === 'home/index' || 
-            path.startsWith('home/') || 
-            path === 'work/loadingview' || 
-            path === 'work/loadingview/';
-        
-        if (shouldHideFooter) {
-            // Добавляем стиль немедленного скрытия
-            const style = document.createElement('style');
-            style.id = 'immediate-footer-hide';
-            style.textContent = '#appFooter { display: none !important; }';
-            document.head.appendChild(style);
-        }
-    })();
-
-    // Функция для определения активного маршрута и подсветки кнопки
+﻿    // Функция для определения активного маршрута и подсветки кнопки
     function setActiveNavLink() {
         const currentPath = window.location.pathname.toLowerCase();
         const navLinks = document.querySelectorAll('.nav-tabs-custom .nav-link[data-route]');
@@ -66,36 +42,6 @@
                     }
                 }
             });
-        }
-    }
-
-    // Функция для управления видимостью футера
-    function toggleFooterVisibility() {
-        const currentPath = window.location.pathname.toLowerCase();
-        const footer = document.getElementById('appFooter');
-        
-        if (!footer) return;
-        
-        const path = currentPath.replace(/^\//, '');
-        
-        const shouldHideFooter = 
-            path === '' || 
-            path === 'home' || 
-            path === 'home/index' || 
-            path.startsWith('home/') || 
-            path === 'work/loadingview' || 
-            path === 'work/loadingview/';
-        
-        // Удаляем ранее добавленный стиль, если он есть
-        const existingStyle = document.getElementById('immediate-footer-hide');
-        if (existingStyle) {
-            existingStyle.remove();
-        }
-        
-        if (shouldHideFooter) {
-            footer.classList.add('hidden');
-        } else {
-            footer.classList.remove('hidden');
         }
     }
 
@@ -180,57 +126,6 @@
                 
                 return true;
             });
-        });
-    }
-
-    // Функция для настройки кнопок футера
-    function setupFooterButtons() {
-        const createBtn = document.getElementById('createBtn');
-        const editBtn = document.getElementById('editBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const deleteBtn = document.getElementById('deleteBtn');
-        
-        if (createBtn) createBtn.disabled = false;
-        if (editBtn) editBtn.disabled = false;
-        if (copyBtn) copyBtn.disabled = false;
-        if (deleteBtn) deleteBtn.disabled = false;
-        
-        // Удаляем старые обработчики и добавляем новые
-        const newCreateBtn = createBtn.cloneNode(true);
-        const newEditBtn = editBtn.cloneNode(true);
-        const newCopyBtn = copyBtn.cloneNode(true);
-        const newDeleteBtn = deleteBtn.cloneNode(true);
-        
-        if (createBtn && createBtn.parentNode) {
-            createBtn.parentNode.replaceChild(newCreateBtn, createBtn);
-        }
-        if (editBtn && editBtn.parentNode) {
-            editBtn.parentNode.replaceChild(newEditBtn, editBtn);
-        }
-        if (copyBtn && copyBtn.parentNode) {
-            copyBtn.parentNode.replaceChild(newCopyBtn, copyBtn);
-        }
-        if (deleteBtn && deleteBtn.parentNode) {
-            deleteBtn.parentNode.replaceChild(newDeleteBtn, deleteBtn);
-        }
-        
-        // Добавляем новые обработчики
-        newCreateBtn.addEventListener('click', function() {
-            alert('Создание нового элемента');
-        });
-        
-        newEditBtn.addEventListener('click', function() {
-            alert('Редактирование элемента');
-        });
-        
-        newCopyBtn.addEventListener('click', function() {
-            alert('Копирование элемента');
-        });
-        
-        newDeleteBtn.addEventListener('click', function() {
-            if (confirm('Вы уверены, что хотите удалить элемент?')) {
-                alert('Удаление элемента');
-            }
         });
     }
 

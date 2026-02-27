@@ -4,26 +4,148 @@
     ViewData["Title"] = "Список заказов";
 }
 
-<div class="text-center">
-    <p><a asp-action="CreateOrder">Создать заказ</a></p>
-    <table class="table">
-        <tr><th>Название</th>
-            <th>Изделие</th>
-            <th>Количество</th>
-        </tr>
-        
-        @foreach (var order in Model) {
-            bool isFirstRow = true;
-            foreach (var order_item in @order.OrderItems) {
-                <tr>
-                    @if (isFirstRow) {
-                        <td rowspan="@order.OrderItems.Count">@order.Name</td>
-                        isFirstRow = false;
-                    }
-                    <td>@order_item.Item.Name</td>
-                    <td>@order_item.Quantity</td>
-                </tr>
-            }
-        }
-    </table>
+<div class="container-fluid py-4 px-4">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered mb-0" id="dataTable">
+                            <thead class="table-light">
+                            <tr>
+                                <th class="text-nowrap" style="width: 40px;"></th>
+                                <th class="text-nowrap">
+                                    <i class="bi bi-hash me-1"></i>ID
+                                    <span class="filter-indicator" id="idFilterIndicator"></span>
+                                </th>
+                                <th class="text-nowrap">
+                                    <i class="bi bi-person me-1"></i>Имя
+                                    <span class="filter-indicator" id="firstNameFilterIndicator"></span>
+                                </th>
+                                <th class="text-nowrap">
+                                    <i class="bi bi-person me-1"></i>Фамилия
+                                    <span class="filter-indicator" id="lastNameFilterIndicator"></span>
+                                </th>
+                                <th class="text-nowrap" style="min-width: 250px;">
+                                    <i class="bi bi-envelope me-1"></i>Email
+                                    <span class="filter-indicator" id="emailFilterIndicator"></span>
+                                </th>
+                                <th class="text-nowrap" style="min-width: 250px;">
+                                    <i class="bi bi-telephone me-1"></i>Телефон
+                                    <span class="filter-indicator" id="phoneFilterIndicator"></span>
+                                </th>
+                                <th class="text-nowrap" style="min-width: 300px;">
+                                    <i class="bi bi-box me-1"></i>Товары
+                                    <span class="filter-indicator" id="productFilterIndicator"></span>
+                                </th>
+                                <th class="text-nowrap">
+                                    <i class="bi bi-gear me-1"></i>Действия
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Строка для ввода/редактирования данных -->
+                            <tr class="filter-row" id="editRow">
+                                <td></td>
+                                <td>
+                                    <input type="text"
+                                           class="form-control form-control-sm"
+                                           id="editId"
+                                           placeholder="ID"
+                                           aria-label="ID">
+                                </td>
+                                <td>
+                                    <input type="text"
+                                           class="form-control form-control-sm"
+                                           id="editFirstName"
+                                           placeholder="Имя"
+                                           aria-label="Имя">
+                                </td>
+                                <td>
+                                    <input type="text"
+                                           class="form-control form-control-sm"
+                                           id="editLastName"
+                                           placeholder="Фамилия"
+                                           aria-label="Фамилия">
+                                </td>
+                                <td>
+                                    <div class="multiple-fields-container" id="emailContainer">
+                                        <!-- Email поля будут добавляться сюда -->
+                                    </div>
+                                    <button class="btn-add-field btn-sm" onclick="addEmailField()">
+                                        <i class="bi bi-plus-circle me-1"></i>
+                                        Добавить email
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="multiple-fields-container" id="phoneContainer">
+                                        <!-- Телефон поля будут добавляться сюда -->
+                                    </div>
+                                    <button class="btn-add-field btn-sm" onclick="addPhoneField()">
+                                        <i class="bi bi-plus-circle me-1"></i>
+                                        Добавить телефон
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="product-header">
+                                        <h6 class="mb-0">Выберите товары:</h6>
+                                        <a href="/products/create" class="btn-add-product btn-sm" target="_blank">
+                                            <i class="bi bi-plus-circle"></i>
+                                            Новый товар
+                                        </a>
+                                    </div>
+                                    <div class="multiple-fields-container" id="productContainer">
+                                        <!-- Товары будут добавляться сюда -->
+                                    </div>
+                                    <button class="btn-add-field btn-sm" onclick="addProductField()">
+                                        <i class="bi bi-plus-circle me-1"></i>
+                                        Добавить товар в список
+                                    </button>
+                                </td>
+                                <td class="text-center">
+                                    <div class="action-buttons">
+                                        <button class="btn btn-add btn-sm flex-grow-1" id="mainActionBtn"
+                                                onclick="handleMainAction()">
+                                            <i class="bi bi-plus-circle me-1"></i>
+                                            Добавить
+                                        </button>
+                                        <button class="btn btn-cancel btn-sm" id="cancelBtn" onclick="cancelEditing()"
+                                                style="display: none;">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Строки с данными будут добавляться сюда через JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white text-muted small">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <div class="footer-actions">
+                                <span>
+                                    <i class="bi bi-funnel me-1"></i>
+                                    Всего записей: <span id="totalRecords">5</span>
+                                </span>
+                            <span>
+                                    <i class="bi bi-eye me-1"></i>
+                                    Отображается: <span id="displayedRecords">5</span>
+                                </span>
+                            <span id="activeFiltersBadge" class="filter-active-badge" style="display: none;">
+                                    <i class="bi bi-funnel-fill me-1"></i>
+                                    Фильтры активны
+                                </span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary" id="clearFiltersFooterBtn"
+                                onclick="clearAllFilters()" style="display: none;">
+                            <i class="bi bi-funnel-x me-1"></i>
+                            Сбросить фильтры
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
