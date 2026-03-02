@@ -15,28 +15,12 @@
                             <tr>
                                 <th class="text-nowrap" style="width: 40px;"></th>
                                 <th class="text-nowrap">
-                                    <i class="bi bi-hash me-1"></i>ID
-                                    <span class="filter-indicator" id="idFilterIndicator"></span>
-                                </th>
-                                <th class="text-nowrap">
-                                    <i class="bi bi-person me-1"></i>Имя
-                                    <span class="filter-indicator" id="firstNameFilterIndicator"></span>
-                                </th>
-                                <th class="text-nowrap">
-                                    <i class="bi bi-person me-1"></i>Фамилия
-                                    <span class="filter-indicator" id="lastNameFilterIndicator"></span>
-                                </th>
-                                <th class="text-nowrap" style="min-width: 250px;">
-                                    <i class="bi bi-envelope me-1"></i>Email
-                                    <span class="filter-indicator" id="emailFilterIndicator"></span>
-                                </th>
-                                <th class="text-nowrap" style="min-width: 250px;">
-                                    <i class="bi bi-telephone me-1"></i>Телефон
-                                    <span class="filter-indicator" id="phoneFilterIndicator"></span>
+                                    <i class="bi bi-person me-1"></i>Название заказа
+                                    <span class="filter-indicator" id="orderNameFilterIndicator"></span>
                                 </th>
                                 <th class="text-nowrap" style="min-width: 300px;">
-                                    <i class="bi bi-box me-1"></i>Товары
-                                    <span class="filter-indicator" id="productFilterIndicator"></span>
+                                    <i class="bi bi-box me-1"></i>Изделия
+                                    <span class="filter-indicator" id="itemFilterIndicator"></span>
                                 </th>
                                 <th class="text-nowrap">
                                     <i class="bi bi-gear me-1"></i>Действия
@@ -50,56 +34,24 @@
                                 <td>
                                     <input type="text"
                                            class="form-control form-control-sm"
-                                           id="editId"
-                                           placeholder="ID"
-                                           aria-label="ID">
-                                </td>
-                                <td>
-                                    <input type="text"
-                                           class="form-control form-control-sm"
-                                           id="editFirstName"
-                                           placeholder="Имя"
-                                           aria-label="Имя">
-                                </td>
-                                <td>
-                                    <input type="text"
-                                           class="form-control form-control-sm"
-                                           id="editLastName"
-                                           placeholder="Фамилия"
-                                           aria-label="Фамилия">
-                                </td>
-                                <td>
-                                    <div class="multiple-fields-container" id="emailContainer">
-                                        <!-- Email поля будут добавляться сюда -->
-                                    </div>
-                                    <button class="btn-add-field btn-sm" onclick="addEmailField()">
-                                        <i class="bi bi-plus-circle me-1"></i>
-                                        Добавить email
-                                    </button>
-                                </td>
-                                <td>
-                                    <div class="multiple-fields-container" id="phoneContainer">
-                                        <!-- Телефон поля будут добавляться сюда -->
-                                    </div>
-                                    <button class="btn-add-field btn-sm" onclick="addPhoneField()">
-                                        <i class="bi bi-plus-circle me-1"></i>
-                                        Добавить телефон
-                                    </button>
+                                           id="editOrderName"
+                                           placeholder="Название заказа"
+                                           aria-label="Название заказа">
                                 </td>
                                 <td>
                                     <div class="product-header">
-                                        <h6 class="mb-0">Выберите товары:</h6>
+                                        <h6 class="mb-0">Выберите изделия:</h6>
                                         <a href="/products/create" class="btn-add-product btn-sm" target="_blank">
                                             <i class="bi bi-plus-circle"></i>
-                                            Новый товар
+                                            Новое изделие
                                         </a>
                                     </div>
                                     <div class="multiple-fields-container" id="productContainer">
-                                        <!-- Товары будут добавляться сюда -->
+                                        <!-- Изделия будут добавляться сюда -->
                                     </div>
                                     <button class="btn-add-field btn-sm" onclick="addProductField()">
                                         <i class="bi bi-plus-circle me-1"></i>
-                                        Добавить товар в список
+                                        Добавить изделие в список
                                     </button>
                                 </td>
                                 <td class="text-center">
@@ -127,11 +79,11 @@
                         <div class="footer-actions">
                                 <span>
                                     <i class="bi bi-funnel me-1"></i>
-                                    Всего записей: <span id="totalRecords">5</span>
+                                    Всего записей: <span id="totalRecords">0</span>
                                 </span>
                             <span>
                                     <i class="bi bi-eye me-1"></i>
-                                    Отображается: <span id="displayedRecords">5</span>
+                                    Отображается: <span id="displayedRecords">0</span>
                                 </span>
                             <span id="activeFiltersBadge" class="filter-active-badge" style="display: none;">
                                     <i class="bi bi-funnel-fill me-1"></i>
