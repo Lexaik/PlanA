@@ -2,7 +2,10 @@ using PlanA.Models;
 
 namespace PlanA.ViewModels;
 
-public class CreateOrderViewModel {
+public class OrderViewModel {
+	
+	public List<Order> TableOrders { get; set; } = new ();
+	public List<Asset> ListAssets { get; set; } = new ();
 	public string Name { get; set; }
 	public List<SelectedItemViewModel> SelectedItems { get; set; } = new ();
 }

@@ -31,6 +31,9 @@ public class WorkController : Controller {
     }
     
     public async Task<IActionResult> OrdersView() {
+        
+        
+        
         return View(await db.Orders.Include(oi => oi.OrderItems).ThenInclude(i => i.Item).ToListAsync());
     }
 
@@ -88,7 +91,7 @@ public class WorkController : Controller {
         }
         return View(viewModel);
     }*/
-    public async Task<IActionResult> CreateOrder(CreateOrderViewModel viewModel) {
+    public async Task<IActionResult> CreateOrder(OrderViewModel viewModel) {
         if (ModelState.IsValid) {
             try {
                 var selectedItems = viewModel.SelectedItems
@@ -137,9 +140,9 @@ public class WorkController : Controller {
         viewModel = await GetCreateOrderViewModel(viewModel);
         return View(viewModel);
     }
-    private async Task<CreateOrderViewModel> GetCreateOrderViewModel(CreateOrderViewModel existingViewModel = null) {
+    private async Task<OrderViewModel> GetCreateOrderViewModel(OrderViewModel existingViewModel = null) {
         var items = await db.Assets.ToListAsync();
-        var viewModel = existingViewModel ?? new CreateOrderViewModel();
+        var viewModel = existingViewModel ?? new OrderViewModel();
         if (viewModel.SelectedItems == null || !viewModel.SelectedItems.Any()) {
             viewModel.SelectedItems = items.Select(i => new SelectedItemViewModel {
                 Id = i.Id,
