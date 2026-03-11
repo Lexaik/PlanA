@@ -31,10 +31,10 @@ public class WorkController : Controller {
     }
     
     public async Task<IActionResult> OrdersView() {
+        var orders = await db.Orders.Include(oi => oi.OrderItems).ThenInclude(i => i.Item).ToListAsync();
         
         
-        
-        return View(await db.Orders.Include(oi => oi.OrderItems).ThenInclude(i => i.Item).ToListAsync());
+        return View(orders);
     }
 
     public async Task<IActionResult> CreateOrder() {
