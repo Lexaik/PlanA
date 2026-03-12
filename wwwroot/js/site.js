@@ -178,8 +178,15 @@
     
     //260302
     
+    
+    // Загружаем данные из скрытых полей
+        let tableData = JSON.parse(document.getElementById('tableDataJson').value);
+        let availableProducts = JSON.parse(document.getElementById('availableProductsJson').value);
+        
+        // Остальной JavaScript код остается без изменений
+        // ...
     // Список доступных товаров (в реальном приложении загружается с сервера)
-            let availableProducts = [
+            /*let availableProducts = [
                 { id: 1, name: 'Ноутбук' },
                 { id: 2, name: 'Мышь' },
                 { id: 3, name: 'Клавиатура' },
@@ -195,10 +202,10 @@
                 { id: 13, name: 'Смартфон' },
                 { id: 14, name: 'Зарядное устройство' },
                 { id: 15, name: 'Чехол' }
-            ];
+            ];*/
     
             // Исходные данные с контактами и товарами
-            let tableData = [
+            /*let tableData = [
                 { 
                     id: 1, 
                     firstName: 'Иван', 
@@ -284,7 +291,7 @@
                         { productId: 9, quantity: 5 }   // Флешка
                     ]
                 }
-            ];
+            ];*/
     
             // Состояние приложения
             let appState = {
@@ -296,12 +303,8 @@
     
             // Текущие фильтры
             let currentFilters = {
-                id: '',
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-                product: ''
+                Название: '',
+                Изделия: ''
             };
     
             // Функция для получения названия товара по ID

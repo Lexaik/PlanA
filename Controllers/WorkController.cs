@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlanA.Context;
+using PlanA.DTO;
 using PlanA.Models;
 using PlanA.ViewModels;
 
@@ -31,10 +32,13 @@ public class WorkController : Controller {
     }
     
     public async Task<IActionResult> OrdersView() {
-        var orders = await db.Orders.Include(oi => oi.OrderItems).ThenInclude(i => i.Item).ToListAsync();
+        var model = new OrderDTO {
+            Orders = await db.Orders.Include(oi => oi.OrderItems).ThenInclude(i => i.Item).ToListAsync(),
+            Assets = await db.Assets.ToListAsync()
+        };
         
         
-        return View(orders);
+        return View(model);
     }
 
     public async Task<IActionResult> CreateOrder() {
