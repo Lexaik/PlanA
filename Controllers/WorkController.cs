@@ -36,8 +36,6 @@ public class WorkController : Controller {
             Orders = await db.Orders.Include(oi => oi.OrderItems).ThenInclude(i => i.Item).ToListAsync(),
             Assets = await db.Assets.ToListAsync()
         };
-        
-        
         return View(model);
     }
 
