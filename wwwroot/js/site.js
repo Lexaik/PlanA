@@ -144,7 +144,7 @@
         }
         
         // Дополнительно проверяем видимость футера
-        toggleFooterVisibility();
+        //toggleFooterVisibility();
     }
 
     // Инициализация после полной загрузки DOM
@@ -156,19 +156,19 @@
         }
         
         setActiveNavLink();
-        toggleFooterVisibility();
+        //toggleFooterVisibility();
         adaptLayout();
         setupNavigationHandlers();
-        setupFooterButtons();
+        //setupFooterButtons();
         restoreFromSession();
     });
 
     // Оптимизированная загрузка
     window.addEventListener('load', function() {
-        toggleFooterVisibility();
+        //toggleFooterVisibility();
         setActiveNavLink();
         adaptLayout();
-        setupFooterButtons();
+        //setupFooterButtons();
     });
 
     window.addEventListener('popstate', function() {
@@ -180,8 +180,8 @@
     
     
     // Загружаем данные из скрытых полей
-        let tableData = JSON.parse(document.getElementById('tableDataJson').value);
-        let availableProducts = JSON.parse(document.getElementById('availableProductsJson').value);
+        let tableData = JSON.parse(document.getElementById('tableOrderJson').value);
+        let availableProducts = JSON.parse(document.getElementById('availableAssetsJson').value);
         
         // Остальной JavaScript код остается без изменений
         // ...
@@ -371,35 +371,35 @@
             // Функция для проверки, соответствует ли запись фильтрам
             function rowMatchesFilters(row) {
                 // Проверка ID
-                if (currentFilters.id && !row.id.toString().toLowerCase().includes(currentFilters.id.toLowerCase())) {
+                /*if (currentFilters.id && !row.id.toString().toLowerCase().includes(currentFilters.id.toLowerCase())) {
                     return false;
-                }
+                }*/
                 
                 // Проверка имени
-                if (currentFilters.firstName && !row.firstName.toLowerCase().includes(currentFilters.firstName.toLowerCase())) {
+                if (currentFilters.Name && !row.Name.toLowerCase().includes(currentFilters.Name.toLowerCase())) {
                     return false;
                 }
                 
                 // Проверка фамилии
-                if (currentFilters.lastName && !row.lastName.toLowerCase().includes(currentFilters.lastName.toLowerCase())) {
+                /*if (currentFilters.lastName && !row.lastName.toLowerCase().includes(currentFilters.lastName.toLowerCase())) {
                     return false;
-                }
+                }*/
                 
                 // Проверка email
-                if (currentFilters.email) {
+                /*if (currentFilters.email) {
                     const emailMatches = row.emails.some(email => 
                         email.toLowerCase().includes(currentFilters.email.toLowerCase())
                     );
                     if (!emailMatches) return false;
-                }
+                }*/
                 
                 // Проверка телефона
-                if (currentFilters.phone) {
+                /*if (currentFilters.phone) {
                     const phoneMatches = row.phones.some(phone => 
                         phone.toLowerCase().includes(currentFilters.phone.toLowerCase())
                     );
                     if (!phoneMatches) return false;
-                }
+                }*/
                 
                 // Проверка товаров
                 if (currentFilters.product) {
@@ -473,24 +473,24 @@
             }
     
             // Функция для получения всех email для отображения
-            function getEmailBadges(emails) {
+            /*function getEmailBadges(emails) {
                 return emails.map(email => 
                     `<span class="contact-badge email-badge" title="${email}">
                         <i class="bi bi-envelope"></i>
                         <span class="value">${escapeHtml(email)}</span>
                     </span>`
                 ).join('');
-            }
+            }*/
     
             // Функция для получения всех телефонов для отображения
-            function getPhoneBadges(phones) {
+            /*function getPhoneBadges(phones) {
                 return phones.map(phone => 
                     `<span class="contact-badge phone-badge" title="${phone}">
                         <i class="bi bi-telephone"></i>
                         <span class="value">${escapeHtml(phone)}</span>
                     </span>`
                 ).join('');
-            }
+            }*/
     
             // Функция для получения всех товаров для отображения
             function getProductBadges(products) {
@@ -515,7 +515,7 @@
             }
     
             // Функция для добавления поля email
-            function addEmailField(email = '') {
+            /*function addEmailField(email = '') {
                 const container = document.getElementById('emailContainer');
                 const emailId = 'email_' + Date.now() + '_' + Math.random();
                 
@@ -538,7 +538,7 @@
                 input.addEventListener('input', function(e) {
                     updateFilter('email', e.target.value);
                 });
-            }
+            }*/
     
             // Функция для добавления поля телефона
             function addPhoneField(phone = '') {
@@ -581,7 +581,7 @@
                 
                 // Заполняем select опциями
                 const selectedIds = getSelectedProductIds();
-                let options = '<option value="">Выберите товар...</option>';
+                let options = '<option value="">Выберите изделие...</option>';
                 availableProducts.forEach(p => {
                     if (!selectedIds.includes(p.id) || p.id === (product ? product.productId : null)) {
                         const selected = p.id === (product ? product.productId : null) ? 'selected' : '';
@@ -630,7 +630,7 @@
                     
                     // После удаления обновляем фильтры
                     const emailInputs = document.querySelectorAll('#emailContainer .email-input');
-                    const phoneInputs = document.querySelectorAll('#phoneContainer .phone-input');
+                    /*const phoneInputs = document.querySelectorAll('#phoneContainer .phone-input');*/
                     const productSelects = document.querySelectorAll('#productContainer .product-select');
                     
                     let hasEmailValue = false;
@@ -1005,18 +1005,8 @@
                            onclick="toggleRowExpanded(${row.id})"></i>
                     </td>
                     <td><span class="badge bg-secondary">${row.id}</span></td>
-                    <td>${escapeHtml(row.firstName)}</td>
-                    <td>${escapeHtml(row.lastName)}</td>
-                    <td>
-                        <div class="contacts-badge">
-                            ${getEmailBadges(row.emails)}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="contacts-badge">
-                            ${getPhoneBadges(row.phones)}
-                        </div>
-                    </td>
+                    <td>${escapeHtml(row.Name)}</td>
+                    
                     <td>
                         <div class="contacts-badge">
                             ${getProductBadges(row.products)}
@@ -1255,8 +1245,8 @@
                 });
                 
                 // Добавляем начальные пустые поля
-                addEmailField();
-                addPhoneField();
+                //addEmailField();
+                //addPhoneField();
                 addProductField();
                 
                 // Первоначальное отображение

@@ -33,7 +33,7 @@ public class WorkController : Controller {
     
     public async Task<IActionResult> OrdersView() {
         var model = new OrderDTO {
-            Orders = await db.Orders.Include(oi => oi.OrderItems).ThenInclude(i => i.Item).ToListAsync(),
+            Orders = await db.Orders.ToListAsync(),
             Assets = await db.Assets.ToListAsync()
         };
         return View(model);
