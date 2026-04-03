@@ -181,12 +181,12 @@
     
     // Загружаем данные из скрытых полей
         let tableData = JSON.parse(document.getElementById('tableOrderJson').value);
-        let availableProducts = JSON.parse(document.getElementById('availableAssetsJson').value);
+        let availableAssets = JSON.parse(document.getElementById('availableAssetsJson').value);
         
         // Остальной JavaScript код остается без изменений
         // ...
     // Список доступных товаров (в реальном приложении загружается с сервера)
-            /*let availableProducts = [
+            /*let availableAssets = [
                 { id: 1, name: 'Ноутбук' },
                 { id: 2, name: 'Мышь' },
                 { id: 3, name: 'Клавиатура' },
@@ -308,8 +308,8 @@
             };
     
             // Функция для получения названия товара по ID
-            function getProductName(productId) {
-                const product = availableProducts.find(p => p.id === productId);
+            function getProductName(Id) {
+                const product = availableAssets.find(p => p.id === Id);
                 return product ? product.name : 'Неизвестный товар';
             }
     
@@ -343,7 +343,7 @@
                 select.appendChild(emptyOption);
                 
                 // Добавляем товары
-                availableProducts.forEach(product => {
+                availableAssets.forEach(product => {
                     // Показываем товар, если он не в списке исключенных или это текущий выбранный товар
                     if (!selectedIds.includes(product.id) || product.id === parseInt(currentValue)) {
                         const option = document.createElement('option');
@@ -370,10 +370,10 @@
     
             // Функция для проверки, соответствует ли запись фильтрам
             function rowMatchesFilters(row) {
-                // Проверка ID
-                /*if (currentFilters.id && !row.id.toString().toLowerCase().includes(currentFilters.id.toLowerCase())) {
+                //Проверка ID
+                if (currentFilters.id && !row.Id.toString().toLowerCase().includes(currentFilters.id.toLowerCase())) {
                     return false;
-                }*/
+                }
                 
                 // Проверка имени
                 if (currentFilters.Name && !row.Name.toLowerCase().includes(currentFilters.Name.toLowerCase())) {
@@ -403,8 +403,8 @@
                 
                 // Проверка товаров
                 if (currentFilters.product) {
-                    const productMatches = row.products.some(product => {
-                        const productName = getProductName(product.productId);
+                    const productMatches = row.Items.some(product => {
+                        const productName = getProductName(product.Id);
                         return productName.toLowerCase().includes(currentFilters.product.toLowerCase());
                     });
                     if (!productMatches) return false;
@@ -495,7 +495,7 @@
             // Функция для получения всех товаров для отображения
             function getProductBadges(products) {
                 return products.map(product => {
-                    const productName = getProductName(product.productId);
+                    const productName = getProductName(product.Id);
                     return `<span class="product-badge" title="${productName} - ${product.quantity} шт.">
                         <i class="bi bi-box"></i>
                         <span class="value">${escapeHtml(productName)}</span>
@@ -582,9 +582,9 @@
                 // Заполняем select опциями
                 const selectedIds = getSelectedProductIds();
                 let options = '<option value="">Выберите изделие...</option>';
-                availableProducts.forEach(p => {
-                    if (!selectedIds.includes(p.id) || p.id === (product ? product.productId : null)) {
-                        const selected = p.id === (product ? product.productId : null) ? 'selected' : '';
+                availableAssets.forEach(p => {
+                    if (!selectedIds.includes(p.id) || p.id === (product ? product.Id : null)) {
+                        const selected = p.id === (product ? product.Id : null) ? 'selected' : '';
                         options += `<option value="${p.id}" ${selected}>${escapeHtml(p.name)}</option>`;
                     }
                 });
@@ -884,21 +884,21 @@
                 };
                 
                 // Проверка заполнения основных полей
-                if (!editedData.id || !editedData.firstName || !editedData.lastName) {
-                    showToast('Пожалуйста, заполните ID, Имя и Фамилию', 'warning');
+                if (!editedData.Name) {
+                    showToast('Пожалуйста, заполните название заказа', 'warning');
                     return;
                 }
                 
-                // Проверка наличия хотя бы одного контакта или товара
+                /*// Проверка наличия хотя бы одного контакта или товара
                 if (editedData.emails.length === 0 && editedData.phones.length === 0 && editedData.products.length === 0) {
                     showToast('Добавьте хотя бы один email, телефон или товар', 'warning');
                     return;
-                }
+                }*/
                 
                 // Проверка уникальности ID (если изменился)
                 if (editedData.id !== appState.originalData.id) {
                     if (tableData.some(item => item.id === editedData.id)) {
-                        showToast('Пользователь с таким ID уже существует', 'warning');
+                        showToast('Заказ с таким ID уже существует', 'warning');
                         return;
                     }
                 }
