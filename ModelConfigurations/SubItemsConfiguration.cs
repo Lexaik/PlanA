@@ -4,9 +4,9 @@ using PlanA.Models;
 
 namespace PlanA.ModelConfigurations;
 
-public class SubItemsConfiguration : IEntityTypeConfiguration<Sub_items>
+public class SubItemsConfiguration : IEntityTypeConfiguration<SubItems>
 {
-    public void Configure(EntityTypeBuilder<Sub_items> builder)
+    public void Configure(EntityTypeBuilder<SubItems> builder)
     {
         builder.ToTable("Sub_Items");
         builder.HasKey(o => new { o.ItemId, o.SubItemId });

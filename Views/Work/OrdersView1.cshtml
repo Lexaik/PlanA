@@ -19,14 +19,14 @@
         
         @foreach (var order in Model) {
             bool isFirstRow = true;
-            foreach (var order_item in @order.OrderItems) {
+            foreach (var orderItem in @order.OrderItems) {
                 <tr>
                     @if (isFirstRow) {
                         <td rowspan="@order.OrderItems.Count">@order.Name</td>
                         isFirstRow = false;
                     }
-                    <td>@order_item.Item.Name</td>
-                    <td>@order_item.Quantity</td>
+                    <td>@orderItem.Item.Name</td>
+                    <td>@orderItem.Quantity</td>
                 </tr>
             }
         }

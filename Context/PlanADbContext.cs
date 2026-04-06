@@ -9,10 +9,10 @@ public class PlanADbContext : DbContext
     public DbSet<Asset> Assets { get; set; } = null!;
     public DbSet<Operation> Operations { get; set; } = null!;
     public DbSet<Order> Orders { get; set; } = null!;
-    public DbSet<Order_items> OrderItems { get; set; } = null!;
+    public DbSet<OrderItems> OrderItems { get; set; } = null!;
     public DbSet<Process> Processes { get; set; } = null!;
-    public DbSet<Sub_process> SubProcesses { get; set; } = null!;
-    public DbSet<Sub_items> SubItems { get; set; } = null!;
+    public DbSet<SubProcess> SubProcesses { get; set; } = null!;
+    public DbSet<SubItems> SubItems { get; set; } = null!;
     public DbSet<Person> Persons { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<Equipment> Equipments { get; set; } = null!;

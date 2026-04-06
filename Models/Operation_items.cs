@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PlanA.Models;
 
 //public enum OperationItemType {Sources, Supplies, Product, Remains}
-public class Operation_items
+public class OperationItems
 {
     public int OperationId { get; set; }
     public Operation? Operation { get; set; }

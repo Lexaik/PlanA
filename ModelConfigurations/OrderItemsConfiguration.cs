@@ -4,9 +4,9 @@ using PlanA.Models;
 
 namespace PlanA.ModelConfigurations;
 
-public class OrderItemsConfiguration : IEntityTypeConfiguration<Order_items>
+public class OrderItemsConfiguration : IEntityTypeConfiguration<OrderItems>
 {
-    public void Configure(EntityTypeBuilder<Order_items> builder)
+    public void Configure(EntityTypeBuilder<OrderItems> builder)
     {
         builder.ToTable("Order_Items");
         builder.HasKey(o => new { o.ItemId, o.OrderId });

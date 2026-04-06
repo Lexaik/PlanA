@@ -11,14 +11,14 @@ namespace PlanA.Controllers;
 public class WorkController : Controller {
     private readonly ILogger<WorkController> _logger;
 
-    PlanADbContext db;
+    PlanADbContext _db;
     
     public WorkController(PlanADbContext context) {
-        db = context;
+        _db = context;
     }
 
     public async Task<IActionResult> AssetsView() {
-        return View(await db.Assets.Include(i => i.Item).ToListAsync());
+        return View(await _db.Assets.Include(i => i.Item).ToListAsync());
     }
 
     public IActionResult CreateAsset() {
@@ -26,22 +26,22 @@ public class WorkController : Controller {
     }
     [HttpPost]
     public async Task<IActionResult> CreateAsset(Asset asset, Item item) {
-        db.Assets.Add(asset);
-        await db.SaveChangesAsync();
+        _db.Assets.Add(asset);
+        await _db.SaveChangesAsync();
         return RedirectToAction("AssetsView");
     }
     
     public async Task<IActionResult> OrdersView() {
-        var model = new OrderDTO {
-            Orders = await db.Orders.ToListAsync(),
-            Assets = await db.Assets.ToListAsync()
+        var model = new OrderDto {
+            Orders = await _db.Orders.ToListAsync(),
+            Assets = await _db.Assets.ToListAsync()
         };
         return View(model);
     }
 
     public async Task<IActionResult> CreateOrder() {
-        var items = await db.Assets.Include(i => i.Item).ToListAsync();
-        var view_model = await GetCreateOrderViewModel(); /*new CreateOrderViewModel() {
+        var items = await _db.Assets.Include(i => i.Item).ToListAsync();
+        var viewModel = await GetCreateOrderViewModel(); /*new CreateOrderViewModel() {
             SelectedItems = items.Select(i => new SelectedItemViewModel {
                 Id = i.Id,
                 Name = i.Item.Name,
@@ -49,7 +49,7 @@ public class WorkController : Controller {
                 IsSelected = false
             }).ToList()
     };*/
-        return View(view_model);
+        return View(viewModel);
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -109,7 +109,7 @@ public class WorkController : Controller {
                     
                 };
                 foreach (var selectedItem in selectedItems) {
-                    var item = await db.Assets.FindAsync(selectedItem.Id);
+                    var item = await _db.Assets.FindAsync(selectedItem.Id);
                     if (item == null) {
                         ModelState.AddModelError("", $"Товар с ID {selectedItem.Id} не найден");
                         viewModel = await GetCreateOrderViewModel(viewModel);
@@ -121,7 +121,7 @@ public class WorkController : Controller {
                         viewModel = await GetCreateOrderViewModel(viewModel);
                         return View(viewModel);
                     }
-                    var orderItem = new Order_items() {
+                    var orderItem = new OrderItems() {
                         ItemId = selectedItem.Id,
                         Quantity = selectedItem.Quantity,
                         Order = order
@@ -129,8 +129,8 @@ public class WorkController : Controller {
                     item.Quantity -= selectedItem.Quantity;
                     order.OrderItems.Add(orderItem);
                 }
-                db.Orders.Add(order);
-                await db.SaveChangesAsync();
+                _db.Orders.Add(order);
+                await _db.SaveChangesAsync();
                 return RedirectToAction("OrderDetails", new { id = order.Id });
             }
             catch (Exception ex) {
@@ -143,7 +143,7 @@ public class WorkController : Controller {
         return View(viewModel);
     }
     private async Task<OrderViewModel> GetCreateOrderViewModel(OrderViewModel existingViewModel = null) {
-        var items = await db.Assets.ToListAsync();
+        var items = await _db.Assets.ToListAsync();
         var viewModel = existingViewModel ?? new OrderViewModel();
         if (viewModel.SelectedItems == null || !viewModel.SelectedItems.Any()) {
             viewModel.SelectedItems = items.Select(i => new SelectedItemViewModel {
@@ -165,7 +165,7 @@ public class WorkController : Controller {
         return viewModel;
     }
     public async Task<IActionResult> OrderDetails(int id) {
-        var order = await db.Orders
+        var order = await _db.Orders
             .Include(o => o.OrderItems)
             .ThenInclude(oi => oi.Item)
             .FirstOrDefaultAsync(o => o.Id == id);
@@ -176,7 +176,7 @@ public class WorkController : Controller {
         return View(order);
     }
     public async Task<IActionResult> OrdersList() {
-        var orders = await db.Orders
+        var orders = await _db.Orders
             .Include(o => o.OrderItems)
             .ThenInclude(oi => oi.Item)
             .ToListAsync();
@@ -184,7 +184,7 @@ public class WorkController : Controller {
     }
     
     public async Task<IActionResult> OperationsView() {
-        return View(await db.Operations.ToListAsync());
+        return View(await _db.Operations.ToListAsync());
     }
 
     public IActionResult CreateOperation() {
@@ -192,24 +192,24 @@ public class WorkController : Controller {
     }
     [HttpPost]
     public async Task<IActionResult> CreateOperation(Operation oper) {
-        db.Operations.Add(oper);
-        await db.SaveChangesAsync();
+        _db.Operations.Add(oper);
+        await _db.SaveChangesAsync();
         return RedirectToAction("OperationsView");
     }
     
     public async Task<IActionResult> ProcessesView() {
-        return View(await db.Processes.ToListAsync());
+        return View(await _db.Processes.ToListAsync());
     }
     
     public async Task<IActionResult> LoadingView() {
-        var orders = await db.Orders
+        var orders = await _db.Orders
             .Where(o => o.IsActive == true)
             .ToListAsync();
         return View(orders);
     }
     
     public async Task<IActionResult> EmployeesView() {
-        return View(await db.Employees.Include(i => i.Person).ToListAsync());
+        return View(await _db.Employees.Include(i => i.Person).ToListAsync());
     }
 
     public IActionResult CreateEmployee() {
@@ -217,13 +217,13 @@ public class WorkController : Controller {
     }
     [HttpPost]
     public async Task<IActionResult> CreateEmployee(Employee employee) {
-        db.Employees.Add(employee);
-        await db.SaveChangesAsync();
+        _db.Employees.Add(employee);
+        await _db.SaveChangesAsync();
         return RedirectToAction("EmployeesView");
     }
     
     public async Task<IActionResult> EquipmentsView() {
-        return View(await db.Equipments.ToListAsync());
+        return View(await _db.Equipments.ToListAsync());
     }
 
     public IActionResult CreateEquipment() {
@@ -231,8 +231,8 @@ public class WorkController : Controller {
     }
     [HttpPost]
     public async Task<IActionResult> CreateEquipment(Equipment equipment) {
-        db.Equipments.Add(equipment);
-        await db.SaveChangesAsync();
+        _db.Equipments.Add(equipment);
+        await _db.SaveChangesAsync();
         return RedirectToAction("EquipmentsView");
     }
 }

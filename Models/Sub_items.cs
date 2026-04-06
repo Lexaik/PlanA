@@ -1,6 +1,6 @@
 namespace PlanA.Models;
 
-public class Sub_items
+public class SubItems
 {
     public required int ItemId { get; set;}
     public Item? Item { get; set; }

@@ -4,9 +4,9 @@ using PlanA.Models;
 
 namespace PlanA.ModelConfigurations;
 
-public class SubprocessConfiguration: IEntityTypeConfiguration<Sub_process>
+public class SubprocessConfiguration: IEntityTypeConfiguration<SubProcess>
 {
-    public void Configure(EntityTypeBuilder<Sub_process> builder)
+    public void Configure(EntityTypeBuilder<SubProcess> builder)
     {
         builder.ToTable("Sub_Processes");
         builder.HasKey(p => new { p.ProcessId, p.SubProcessId });

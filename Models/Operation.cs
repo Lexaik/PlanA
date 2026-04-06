@@ -8,6 +8,6 @@ public class Operation {
     public required TimeSpan Duration { get; set; }
     
     public List<Item> Items { get; set; } = new();
-    public List<Operation_items> OperationItems { get; set;} = new();
+    public List<OperationItems> OperationItems { get; set;} = new();
     public List<Process> Processes { get; set; } = new();
 }
