@@ -8,14 +8,16 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order> {
     public void Configure(EntityTypeBuilder<Order> builder) {
         builder.ToTable("Orders");
         builder.HasKey(o => o.Id);
-        builder.Property(o => o.Id)
-            .ValueGeneratedOnAdd()
-            .HasColumnType("int");
-        builder.Property(o => o.OrderCreated)
-            .IsRequired()
-            .HasColumnType("datetime2");
+        builder.Property(o => o.Name).IsRequired();
+        builder.Property(o => o.OrderCreated);
+        builder.Property(o => o.PlanDateStart);
+        builder.Property(o => o.PlanDateEnd);
+        builder.Property(o => o.ActualDateStart);
+        builder.Property(o => o.ActualDateEnd);
+        builder.Property(o => o.IsActive);
         builder.Ignore(o => o.OrderItems);
-        builder.OwnsMany(o => o.OrderItems, ownedBuilder => {
+        
+        /*builder.OwnsMany(o => o.OrderItems, ownedBuilder => {
             ownedBuilder.ToTable("OrderItems");
             ownedBuilder.Property<int>("Id")
                 .ValueGeneratedOnAdd()
@@ -31,8 +33,8 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order> {
                 .IsRequired()
                 .HasColumnName("Quantity");
             ownedBuilder.HasIndex("OrderId");
-            ownedBuilder.HasIndex("OrderId", "Name")
+            ownedBuilder.HasIndex("OrderId")
                 .IsUnique();
-        });
+        });*/
     }
 }

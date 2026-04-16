@@ -11,7 +11,7 @@ public class PlanADbContext : DbContext
     public DbSet<Order> Orders { get; set; } = null!;
     public DbSet<OrderItems> OrderItems { get; set; } = null!;
     public DbSet<Process> Processes { get; set; } = null!;
-    public DbSet<SubProcess> SubProcesses { get; set; } = null!;
+    public DbSet<Sub_process> SubProcesses { get; set; } = null!;
     public DbSet<SubItems> SubItems { get; set; } = null!;
     public DbSet<Person> Persons { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
@@ -41,6 +41,7 @@ public class PlanADbContext : DbContext
         modelBuilder.Entity<Asset>().ToTable("Assets");
         modelBuilder.Entity<Item>().ToTable("Assets");
         
+        modelBuilder.ApplyConfiguration(new OrderConfiguration());
         modelBuilder.ApplyConfiguration(new OperationItemsConfiguration());
         modelBuilder.ApplyConfiguration(new OrderItemsConfiguration());
         modelBuilder.ApplyConfiguration(new SubItemsConfiguration());

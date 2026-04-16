@@ -8,5 +8,5 @@ public class Process {
     
     public List<Operation> Operations { get; set; } = new();
     public List<Process> SubProcesses { get; set; } = new();
-    public List<SubProcess> ItemSubProcesses { get; set; } = new();
+    public List<Sub_process> ItemSubProcesses { get; set; } = new();
 }
