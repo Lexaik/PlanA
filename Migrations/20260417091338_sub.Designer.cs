@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlanA.Context;
 
@@ -10,9 +11,11 @@ using PlanA.Context;
 namespace PlanA.Migrations
 {
     [DbContext(typeof(PlanADbContext))]
-    partial class PlanADbContextModelSnapshot : ModelSnapshot
+    [Migration("20260417091338_sub")]
+    partial class sub
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -290,10 +293,15 @@ namespace PlanA.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ProcessId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProcessId");
 
                     b.ToTable("Processes");
                 });
@@ -316,7 +324,7 @@ namespace PlanA.Migrations
                     b.ToTable("Sub_Items", (string)null);
                 });
 
-            modelBuilder.Entity("PlanA.Models.Sub_Process", b =>
+            modelBuilder.Entity("PlanA.Models.SubProcess", b =>
                 {
                     b.Property<int>("ProcessId")
                         .HasColumnType("INTEGER");
@@ -324,9 +332,12 @@ namespace PlanA.Migrations
                     b.Property<int>("SubProcessId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Sub_ProcessId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("ProcessId", "SubProcessId");
 
-                    b.HasIndex("SubProcessId");
+                    b.HasIndex("Sub_ProcessId");
 
                     b.ToTable("Sub_Processes", (string)null);
                 });
@@ -453,6 +464,13 @@ namespace PlanA.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("PlanA.Models.Process", b =>
+                {
+                    b.HasOne("PlanA.Models.Process", null)
+                        .WithMany("SubProcesses")
+                        .HasForeignKey("ProcessId");
+                });
+
             modelBuilder.Entity("PlanA.Models.SubItems", b =>
                 {
                     b.HasOne("PlanA.Models.Item", "Item")
@@ -472,23 +490,23 @@ namespace PlanA.Migrations
                     b.Navigation("SubItem");
                 });
 
-            modelBuilder.Entity("PlanA.Models.Sub_Process", b =>
+            modelBuilder.Entity("PlanA.Models.SubProcess", b =>
                 {
                     b.HasOne("PlanA.Models.Process", "Process")
-                        .WithMany("SubProcesses")
+                        .WithMany("ItemSubProcesses")
                         .HasForeignKey("ProcessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PlanA.Models.Process", "SubProcess")
+                    b.HasOne("PlanA.Models.Process", "Sub_Process")
                         .WithMany()
-                        .HasForeignKey("SubProcessId")
+                        .HasForeignKey("Sub_ProcessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Process");
 
-                    b.Navigation("SubProcess");
+                    b.Navigation("Sub_Process");
                 });
 
             modelBuilder.Entity("PlanA.Models.Asset", b =>
@@ -524,6 +542,8 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Process", b =>
                 {
+                    b.Navigation("ItemSubProcesses");
+
                     b.Navigation("SubProcesses");
                 });
 #pragma warning restore 612, 618

@@ -11,7 +11,7 @@ public class PlanADbContext : DbContext
     public DbSet<Order> Orders { get; set; } = null!;
     public DbSet<OrderItems> OrderItems { get; set; } = null!;
     public DbSet<Process> Processes { get; set; } = null!;
-    public DbSet<Sub_process> SubProcesses { get; set; } = null!;
+    public DbSet<Sub_Process> SubProcesses { get; set; } = null!;
     public DbSet<SubItems> SubItems { get; set; } = null!;
     public DbSet<Person> Persons { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;

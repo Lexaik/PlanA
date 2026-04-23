@@ -1,6 +1,6 @@
 namespace PlanA.Models;
 
-public class Sub_process
+public class Sub_Process
 {
     public required int ProcessId { get; set; }
     public required Process Process { get; set; }

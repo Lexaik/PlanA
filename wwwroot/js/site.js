@@ -148,20 +148,7 @@
     }
 
     // Инициализация после полной загрузки DOM
-    document.addEventListener('DOMContentLoaded', function() {
-        // Удаляем временный стиль, если он есть
-        const tempStyle = document.getElementById('immediate-footer-hide');
-        if (tempStyle) {
-            tempStyle.remove();
-        }
-        
-        setActiveNavLink();
-        //toggleFooterVisibility();
-        adaptLayout();
-        setupNavigationHandlers();
-        //setupFooterButtons();
-        restoreFromSession();
-    });
+    document.addEventListener('DOMContentLoaded', loadData());
 
     // Оптимизированная загрузка
     window.addEventListener('load', function() {
@@ -180,8 +167,45 @@
     
     
     // Загружаем данные из скрытых полей
-        let tableData = JSON.parse(document.getElementById('tableOrderJson').value);
-        let availableAssets = JSON.parse(document.getElementById('availableAssetsJson').value);
+        //let tableData = JSON.parse(document.getElementById('tableOrderJson').value);
+        //let availableAssets = JSON.parse(document.getElementById('availableAssetsJson').value);
+    let tableData = [];
+    let availableAssets = [];
+
+    async function loadData() {
+        try {
+            const [tableResponse, productsResponse] = await Promise.all([
+                fetch('/Work/GetTableData'),
+                fetch('/Work/GetAvailableProducts')
+            ]);
+
+            tableData = await tableResponse.json();
+            availableProducts = await productsResponse.json();
+
+            // Инициализация после загрузки данных
+            initializeApp();
+        } catch (error) {
+            console.error('Ошибка загрузки данных:', error);
+            showToast('Ошибка загрузки данных', 'danger');
+        }
+    }
+
+    function initializeApp() {
+        const tempStyle = document.getElementById('immediate-footer-hide');
+        if (tempStyle) {
+            tempStyle.remove();
+        }
+
+        setActiveNavLink();
+        //toggleFooterVisibility();
+        adaptLayout();
+        setupNavigationHandlers();
+        //setupFooterButtons();
+        restoreFromSession();
+    }
+
+    // Загружаем данные при загрузке страницы
+    //document.addEventListener('DOMContentLoaded', loadData);
         
         // Остальной JavaScript код остается без изменений
         // ...

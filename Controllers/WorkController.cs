@@ -16,6 +16,20 @@ public class WorkController : Controller {
     public WorkController(PlanADbContext context) {
         _db = context;
     }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetTableData()
+    {
+        var Orders = await _db.Orders.ToListAsync();
+        return Json(Orders);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAvailableProducts()
+    {
+        var Assets = await _db.Assets.ToListAsync();
+        return Json(Assets);
+    }
 
     public async Task<IActionResult> AssetsView() {
         return View(await _db.Assets.Include(i => i.Item).ToListAsync());
