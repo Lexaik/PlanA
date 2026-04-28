@@ -165,10 +165,6 @@
     
     //260302
     
-    
-    // Загружаем данные из скрытых полей
-        //let tableData = JSON.parse(document.getElementById('tableOrderJson').value);
-        //let availableAssets = JSON.parse(document.getElementById('availableAssetsJson').value);
     let tableData = [];
     let availableAssets = [];
 
@@ -180,7 +176,7 @@
             ]);
 
             tableData = await tableResponse.json();
-            availableProducts = await productsResponse.json();
+            availableAssets = await productsResponse.json();
 
             // Инициализация после загрузки данных
             initializeApp();
@@ -333,8 +329,8 @@
     
             // Функция для получения названия товара по ID
             function getProductName(Id) {
-                const product = availableAssets.find(p => p.id === Id);
-                return product ? product.name : 'Неизвестный товар';
+                const product = availableAssets.find(p => p.Id === Id);
+                return product ? product.Item.Name : 'Неизвестный товар';
             }
     
             // Функция для получения выбранных ID товаров из формы
@@ -369,11 +365,11 @@
                 // Добавляем товары
                 availableAssets.forEach(product => {
                     // Показываем товар, если он не в списке исключенных или это текущий выбранный товар
-                    if (!selectedIds.includes(product.id) || product.id === parseInt(currentValue)) {
+                    if (!selectedIds.includes(product.Id) || product.Id === parseInt(currentValue)) {
                         const option = document.createElement('option');
-                        option.value = product.id;
-                        option.textContent = product.name;
-                        if (product.id === parseInt(currentValue)) {
+                        option.value = product.Id;
+                        option.textContent = product.Item.Name;
+                        if (product.Id === parseInt(currentValue)) {
                             option.selected = true;
                         }
                         select.appendChild(option);
@@ -607,9 +603,9 @@
                 const selectedIds = getSelectedProductIds();
                 let options = '<option value="">Выберите изделие...</option>';
                 availableAssets.forEach(p => {
-                    if (!selectedIds.includes(p.id) || p.id === (product ? product.Id : null)) {
-                        const selected = p.id === (product ? product.Id : null) ? 'selected' : '';
-                        options += `<option value="${p.id}" ${selected}>${escapeHtml(p.name)}</option>`;
+                    if (!selectedIds.includes(p.Id) || p.Id === (product ? product.Id : null)) {
+                        const selected = p.Id === (product ? product.Id : null) ? 'selected' : '';
+                        options += `<option value="${p.Id}" ${selected}>${escapeHtml(p.Item.Name)}</option>`;
                     }
                 });
                 select.innerHTML = options;
