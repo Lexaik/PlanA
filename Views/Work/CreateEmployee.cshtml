@@ -1,20 +1,36 @@
-﻿@model PlanA.Models.Asset
+﻿@model PlanA.Models.Employee
 
 
 @{
-    ViewData["Title"] = "Добавление нового изделия";
+    ViewData["Title"] = "Добавление нового сотрудника";
 }
 
 <div class="text-center">
-    <form asp-action="CreateAsset" asp-controller="Work">
+    <form asp-action="CreateEmployee" asp-controller="Work">
         <p>
-            
-            <label asp-for="Item.Name">Имя</label>
-            <input type="text" asp-for="Item.Name" />
+            <label asp-for="Person.LastName">Фамилия</label>
+            <input type="text" asp-for="Person.LastName" />
             <br/>
-
-            <label asp-for="Quantity">Количество</label>
-            <input type="text" asp-for="Quantity"/>
+            <label asp-for="Person.Name">Имя</label>
+            <input type="text" asp-for="Person.Name" />
+            <br/>
+            <label asp-for="Person.Patronymic">Отчество</label>
+            <input type="text" asp-for="Person.Patronymic" />
+            <br/>
+            <label asp-for="Person.Birthday">Дата рождения</label>
+            <input type="text" asp-for="Person.Birthday" />
+            <br/>
+            <label asp-for="Person.PhoneNumber">Номер телефона</label>
+            <input type="text" asp-for="Person.PhoneNumber" />
+            <br/>
+            <label asp-for="Person.Address">Адрес</label>
+            <input type="text" asp-for="Person.Address" />
+            <br/>
+            <label asp-for="Profession">Профессия</label>
+            <input type="text" asp-for="Profession" />
+            <br/>
+            <label asp-for="Salary">Заработная плата</label>
+            <input type="text" asp-for="Salary" />
         </p>
         <p>
             <input type="submit" value="Отправить" />

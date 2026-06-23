@@ -1,0 +1,23 @@
+﻿@model PlanA.Models.Equipment
+
+
+@{
+    ViewData["Title"] = "Добавление нового оборудования";
+}
+
+<div class="text-center">
+    <form asp-action="CreateEquipment" asp-controller="Work">
+        <p>
+            
+            <label asp-for="Name">Имя</label>
+            <input type="text" asp-for="Name" />
+            <br/>
+
+            <label asp-for="Cost">Стоимость</label>
+            <input type="text" asp-for="Cost"/>
+        </p>
+        <p>
+            <input type="submit" value="Добавить" />
+        </p>
+    </form>
+</div>
