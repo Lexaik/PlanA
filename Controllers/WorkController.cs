@@ -46,11 +46,7 @@ public class WorkController : Controller {
     }
     
     public async Task<IActionResult> OrdersView() {
-        var model = new OrderDto {
-            Orders = await _db.Orders.ToListAsync(),
-            Assets = await _db.Assets.ToListAsync()
-        };
-        return View(model);
+        return View(await _db.Orders.ToListAsync());
     }
 
     
