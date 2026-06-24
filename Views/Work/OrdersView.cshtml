@@ -22,16 +22,16 @@
         {
             <tr>
                 if (@order.OrderItems != null){
-                    @foreach (var order_item in @order.OrderItems) {
-                        <td>@order.Name</td>
-                        <td>@order.PlanDateStart</td>
-                        <td>@order.ActualDateStart</td>
-                        <td>@order.PlanDateEnd</td>
-                        <td>@order.ActualDateEnd</td>
-                        <td>@order_item.Item.Name</td>
-                        <td>@order_item.Quantity</td>
-                        <td>@order.IsActive</td>
-                    }
+                @foreach (var order_item in @order.OrderItems) {
+                    <td>@order.Name</td>
+                    <td>@order.PlanDateStart</td>
+                    <td>@order.ActualDateStart</td>
+                    <td>@order.PlanDateEnd</td>
+                    <td>@order.ActualDateEnd</td>
+                    <td>@order_item.Item.Name</td>
+                    <td>@order_item.Quantity</td>
+                    <td>@order.IsActive</td>
+                }
                 }
                 else {
                 <td>@order.Name</td>
@@ -44,6 +44,7 @@
                 <td>@order.IsActive</td>
                 }
             </tr>
+            <tr></tr>
         }
     </table>
 </div>
