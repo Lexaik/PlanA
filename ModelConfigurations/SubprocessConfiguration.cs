@@ -8,7 +8,7 @@ public class SubprocessConfiguration: IEntityTypeConfiguration<Sub_Process>
 {
     public void Configure(EntityTypeBuilder<Sub_Process> builder)
     {
-        builder.ToTable("Sub_Processes");
+        builder.ToTable("sub_processes");
         builder.HasKey(p => new { p.ProcessId, p.SubProcessId });
         
         builder.HasOne(i => i.Process)

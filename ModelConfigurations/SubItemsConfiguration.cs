@@ -8,7 +8,7 @@ public class SubItemsConfiguration : IEntityTypeConfiguration<SubItems>
 {
     public void Configure(EntityTypeBuilder<SubItems> builder)
     {
-        builder.ToTable("Sub_Items");
+        builder.ToTable("sub_items");
         builder.HasKey(o => new { o.ItemId, o.SubItemId });
         builder.Property(o => o.Quantity).IsRequired();
             

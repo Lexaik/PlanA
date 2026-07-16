@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PlanA.Context;
@@ -11,9 +12,11 @@ using PlanA.Context;
 namespace PlanA.Migrations
 {
     [DbContext(typeof(PlanADbContext))]
-    partial class PlanADbContextModelSnapshot : ModelSnapshot
+    [Migration("20260715090939_111")]
+    partial class _111
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,6 +225,11 @@ namespace PlanA.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<DateTime>("OrderCreated")
                         .HasColumnType("timestamp with time zone");
 
@@ -230,11 +238,6 @@ namespace PlanA.Migrations
 
                     b.Property<DateTime>("PlanDateStart")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 

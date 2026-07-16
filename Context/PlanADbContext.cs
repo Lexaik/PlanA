@@ -6,16 +6,16 @@ namespace PlanA.Context;
 
 public class PlanADbContext : DbContext
 {
-    public DbSet<Asset> Assets { get; set; } = null!;
-    public DbSet<Operation> Operations { get; set; } = null!;
-    public DbSet<Order> Orders { get; set; } = null!;
-    public DbSet<OrderItems> OrderItems { get; set; } = null!;
-    public DbSet<Process> Processes { get; set; } = null!;
-    public DbSet<Sub_Process> SubProcesses { get; set; } = null!;
-    public DbSet<SubItems> SubItems { get; set; } = null!;
-    public DbSet<Person> Persons { get; set; } = null!;
-    public DbSet<Employee> Employees { get; set; } = null!;
-    public DbSet<Equipment> Equipments { get; set; } = null!;
+    public DbSet<Asset> assets { get; set; } = null!;
+    public DbSet<Operation> operations { get; set; } = null!;
+    public DbSet<Order> orders { get; set; } = null!;
+    public DbSet<OrderItems> order_items { get; set; } = null!;
+    public DbSet<Process> processes { get; set; } = null!;
+    public DbSet<Sub_Process> sub_processes { get; set; } = null!;
+    public DbSet<SubItems> sub_items { get; set; } = null!;
+    public DbSet<Person> persons { get; set; } = null!;
+    public DbSet<Employee> employees { get; set; } = null!;
+    public DbSet<Equipment> equipments { get; set; } = null!;
 
     public PlanADbContext(DbContextOptions<PlanADbContext> options)
         : base(options) {
@@ -28,18 +28,19 @@ public class PlanADbContext : DbContext
             .AddJsonFile("appsettings.json")
             //.SetBasePath(Directory.GetCurrentDirectory())
             .Build();
-        optionsBuilder.UseSqlite(config.GetConnectionString("DefaultConnection"));
+        optionsBuilder.UseNpgsql(config.GetConnectionString("DefaultConnection"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("public");
         modelBuilder.Entity<Asset>()
             .HasOne(i => i.Item)
             .WithOne(a => a.Asset)
             .HasForeignKey<Item>(it => it.Id)
             .OnDelete(DeleteBehavior.Cascade);
-        modelBuilder.Entity<Asset>().ToTable("Assets");
-        modelBuilder.Entity<Item>().ToTable("Assets");
+        modelBuilder.Entity<Asset>().ToTable("assets");
+        modelBuilder.Entity<Item>().ToTable("assets");
         
         modelBuilder.ApplyConfiguration(new OrderConfiguration());
         modelBuilder.ApplyConfiguration(new OperationItemsConfiguration());

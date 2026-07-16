@@ -8,7 +8,7 @@ public class OperationItemsConfiguration : IEntityTypeConfiguration<OperationIte
 {
     public void Configure(EntityTypeBuilder<OperationItems> builder)
     {
-        builder.ToTable("Operation_Items");
+        builder.ToTable("operation_items");
             builder.HasKey(o => new { o.ItemId, o.OperationId });
             builder.Property(o => o.ItemType).IsRequired();
             builder.Property(o => o.Quantity).IsRequired();

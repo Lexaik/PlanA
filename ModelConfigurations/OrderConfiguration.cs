@@ -6,7 +6,7 @@ namespace PlanA.ModelConfigurations;
 
 public class OrderConfiguration : IEntityTypeConfiguration<Order> {
     public void Configure(EntityTypeBuilder<Order> builder) {
-        builder.ToTable("Orders");
+        builder.ToTable("orders");
         builder.HasKey(o => o.Id);
         builder.Property(o => o.Name).IsRequired();
         builder.Property(o => o.OrderCreated);
