@@ -33,6 +33,7 @@ public class PlanADbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseIdentityColumns();
         modelBuilder.HasDefaultSchema("public");
         modelBuilder.Entity<Asset>()
             .HasOne(i => i.Item)

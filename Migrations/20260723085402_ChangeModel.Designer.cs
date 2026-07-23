@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PlanA.Context;
@@ -11,9 +12,11 @@ using PlanA.Context;
 namespace PlanA.Migrations
 {
     [DbContext(typeof(PlanADbContext))]
-    partial class PlanADbContextModelSnapshot : ModelSnapshot
+    [Migration("20260723085402_ChangeModel")]
+    partial class ChangeModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

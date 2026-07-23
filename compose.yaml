@@ -1,0 +1,7 @@
+﻿services:
+  plana:
+    image: plana
+    build:
+      context: .
+      dockerfile: Dockerfile
+

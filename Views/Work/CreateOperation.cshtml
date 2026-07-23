@@ -7,17 +7,16 @@
 
 <div class="text-center">
     <form asp-action="CreateOperation" asp-controller="Work">
-        <p>
-            
-            <label asp-for="Name">Наименование</label>
-            <input type="text" asp-for="Name" />
-            <br/>
-
-            <label asp-for="Duration">Длительность</label>
-            <input type="text" asp-for="Duration"/>
-        </p>
-        <p>
-            <input type="submit" value="Отправить" />
-        </p>
+        <table class="table">
+            <tr><th><label asp-for="Name">Наименование</label></th>
+                <th><label asp-for="Duration">Длительность</label></th>
+                <th></th>
+            </tr>
+            <tr>
+                <td><input type="text" asp-for="Name"/></td>
+                <td><input type="text" asp-for="Duration"/></td>
+                <td><input type="submit" value="Добавить"/></td>
+            </tr>
+        </table>
     </form>
 </div>
