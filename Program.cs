@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using PlanA.Context;
-using PlanA.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<PlanADbContext>(options => options.UseNpgsql(connection));
+builder.Services.AddDbContext<PlanADbContext>(options => options.UseNpgsql(connection,
+    npgsqlOptions => npgsqlOptions.UseNodaTime()));
+//string connection = builder.Configuration.GetConnectionString("ReserveConnection");
+//builder.Services.AddDbContext<PlanADbContext>(options => options.UseSqlite(connection));
 
 builder.Services.AddControllersWithViews();
 

@@ -1,9 +1,15 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using NodaTime;
+
 namespace PlanA.Models;
 
 public class Process {
-    public int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid Id { get; set; }
     public required string Name { get; set; }
-    public required TimeSpan Duration { get; set; }
+    public required Period Duration { get; set; }
     public required int Quantity { get; set; }
     
     public List<Operation> Operations { get; set; } = new();

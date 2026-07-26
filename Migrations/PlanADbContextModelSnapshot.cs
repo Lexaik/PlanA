@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PlanA.Context;
 
@@ -21,15 +22,15 @@ namespace PlanA.Migrations
                 .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseSerialColumns(modelBuilder);
 
             modelBuilder.Entity("EmployeeEquipment", b =>
                 {
-                    b.Property<int>("EmployeesId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("EmployeesId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("EquipmentsId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("EquipmentsId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("EmployeesId", "EquipmentsId");
 
@@ -40,11 +41,11 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("ItemOperation", b =>
                 {
-                    b.Property<int>("ItemsId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ItemsId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("OperationsId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("OperationsId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("ItemsId", "OperationsId");
 
@@ -55,11 +56,11 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("ItemOrder", b =>
                 {
-                    b.Property<int>("ItemsId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ItemsId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("OrdersId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("ItemsId", "OrdersId");
 
@@ -70,11 +71,11 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("OperationProcess", b =>
                 {
-                    b.Property<int>("OperationsId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("OperationsId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("ProcessesId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ProcessesId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("OperationsId", "ProcessesId");
 
@@ -85,11 +86,9 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Asset", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -101,14 +100,12 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Employee", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("PersonId")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("PersonId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Profession")
                         .IsRequired()
@@ -126,11 +123,9 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Equipment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<double>("Cost")
                         .HasColumnType("double precision");
@@ -146,11 +141,12 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Item", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("ItemId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -165,11 +161,9 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Operation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("interval");
@@ -185,11 +179,11 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.OperationItems", b =>
                 {
-                    b.Property<int>("ItemId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("OperationId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("OperationId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ItemType")
                         .IsRequired()
@@ -207,11 +201,9 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ActualDateEnd")
                         .HasColumnType("timestamp with time zone");
@@ -243,11 +235,11 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.OrderItems", b =>
                 {
-                    b.Property<int>("ItemId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -261,11 +253,9 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Person", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -297,13 +287,12 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Process", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<TimeSpan>("Duration")
+                    b.Property<Period>("Duration")
+                        .IsRequired()
                         .HasColumnType("interval");
 
                     b.Property<string>("Name")
@@ -320,11 +309,11 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.SubItems", b =>
                 {
-                    b.Property<int>("ItemId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("SubItemId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("SubItemId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
@@ -338,11 +327,11 @@ namespace PlanA.Migrations
 
             modelBuilder.Entity("PlanA.Models.Sub_Process", b =>
                 {
-                    b.Property<int>("ProcessId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ProcessId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("SubProcessId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("SubProcessId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("ProcessId", "SubProcessId");
 

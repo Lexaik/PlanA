@@ -10,6 +10,8 @@ public class WorkController : Controller {
 
     PlanADbContext _db;
     
+
+    
     public WorkController(PlanADbContext context) {
         _db = context;
     }
@@ -53,6 +55,12 @@ public class WorkController : Controller {
         _db.operations.Add(oper);
         await _db.SaveChangesAsync();
         return RedirectToAction("OperationsView");
+    }
+    public IActionResult EditOperation(Guid id) {
+        var operation = _db.operations.Find(id);
+        if (operation == null)
+            return NotFound();
+        return View(operation);
     }
     
     public async Task<IActionResult> ProcessesView() {

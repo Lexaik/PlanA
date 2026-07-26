@@ -4,8 +4,7 @@ using PlanA.Models;
 
 namespace PlanA.Context;
 
-public class PlanADbContext : DbContext
-{
+public class PlanADbContext : DbContext{
     public DbSet<Asset> assets { get; set; } = null!;
     public DbSet<Operation> operations { get; set; } = null!;
     public DbSet<Order> orders { get; set; } = null!;
@@ -19,21 +18,21 @@ public class PlanADbContext : DbContext
 
     public PlanADbContext(DbContextOptions<PlanADbContext> options)
         : base(options) {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
         var config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             //.SetBasePath(Directory.GetCurrentDirectory())
             .Build();
         optionsBuilder.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+        //optionsBuilder.UseSqlite(config.GetConnectionString("ReserveConnection"));
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    protected override void OnModelCreating(ModelBuilder modelBuilder){
         modelBuilder.UseIdentityColumns();
+        modelBuilder.UseSerialColumns();
         modelBuilder.HasDefaultSchema("public");
         modelBuilder.Entity<Asset>()
             .HasOne(i => i.Item)

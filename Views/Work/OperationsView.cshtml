@@ -13,7 +13,11 @@
         
         @foreach (var oper in Model) {
             <tr>
-                <td>@oper.Name</td>
+                <td>
+                    <a asp-action="EditOperation" asp-route-id="@oper.Id">
+                        @oper.Name
+                    </a>
+                </td>
                 <td>@oper.Duration</td>
             </tr>
         }

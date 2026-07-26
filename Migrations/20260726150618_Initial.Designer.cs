@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NodaTime;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PlanA.Context;
 
 #nullable disable
@@ -11,327 +13,334 @@ using PlanA.Context;
 namespace PlanA.Migrations
 {
     [DbContext(typeof(PlanADbContext))]
-    [Migration("20260422081902_new_subprocess")]
-    partial class new_subprocess
+    [Migration("20260726150618_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
+            modelBuilder
+                .HasDefaultSchema("public")
+                .HasAnnotation("ProductVersion", "9.0.9")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseSerialColumns(modelBuilder);
 
             modelBuilder.Entity("EmployeeEquipment", b =>
                 {
-                    b.Property<int>("EmployeesId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("EmployeesId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("EquipmentsId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("EquipmentsId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("EmployeesId", "EquipmentsId");
 
                     b.HasIndex("EquipmentsId");
 
-                    b.ToTable("EmployeeEquipment");
+                    b.ToTable("EmployeeEquipment", "public");
                 });
 
             modelBuilder.Entity("ItemOperation", b =>
                 {
-                    b.Property<int>("ItemsId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ItemsId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("OperationsId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("OperationsId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("ItemsId", "OperationsId");
 
                     b.HasIndex("OperationsId");
 
-                    b.ToTable("ItemOperation");
+                    b.ToTable("ItemOperation", "public");
                 });
 
             modelBuilder.Entity("ItemOrder", b =>
                 {
-                    b.Property<int>("ItemsId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ItemsId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("OrdersId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("ItemsId", "OrdersId");
 
                     b.HasIndex("OrdersId");
 
-                    b.ToTable("ItemOrder");
+                    b.ToTable("ItemOrder", "public");
                 });
 
             modelBuilder.Entity("OperationProcess", b =>
                 {
-                    b.Property<int>("OperationsId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("OperationsId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("ProcessesId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ProcessesId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("OperationsId", "ProcessesId");
 
                     b.HasIndex("ProcessesId");
 
-                    b.ToTable("OperationProcess");
+                    b.ToTable("OperationProcess", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.Asset", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Assets", (string)null);
+                    b.ToTable("assets", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.Employee", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
-                    b.Property<int?>("PersonId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("PersonId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Profession")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<double>("Salary")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PersonId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("employees", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.Equipment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
                     b.Property<double>("Cost")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Equipments");
+                    b.ToTable("equipments", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.Item", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("ItemId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("Assets", (string)null);
+                    b.ToTable("assets", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.Operation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
                     b.Property<TimeSpan>("Duration")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("interval");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Operations");
+                    b.ToTable("operations", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.OperationItems", b =>
                 {
-                    b.Property<int>("ItemId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("OperationId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("OperationId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ItemType")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.HasKey("ItemId", "OperationId");
 
                     b.HasIndex("OperationId");
 
-                    b.ToTable("Operation_Items", (string)null);
+                    b.ToTable("operation_items", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ActualDateEnd")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("ActualDateStart")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("OrderCreated")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("PlanDateEnd")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("PlanDateStart")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("orders", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.OrderItems", b =>
                 {
-                    b.Property<int>("ItemId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.HasKey("ItemId", "OrderId");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Order_Items", (string)null);
+                    b.ToTable("order_items", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.Person", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Birthday")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Patronymic")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persons");
+                    b.ToTable("persons", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.Process", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("TEXT");
+                    b.Property<Period>("Duration")
+                        .IsRequired()
+                        .HasColumnType("interval");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Processes");
+                    b.ToTable("processes", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.SubItems", b =>
                 {
-                    b.Property<int>("ItemId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("SubItemId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("SubItemId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.HasKey("ItemId", "SubItemId");
 
                     b.HasIndex("SubItemId");
 
-                    b.ToTable("Sub_Items", (string)null);
+                    b.ToTable("sub_items", "public");
                 });
 
             modelBuilder.Entity("PlanA.Models.Sub_Process", b =>
                 {
-                    b.Property<int>("ProcessId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ProcessId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("SubProcessId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("SubProcessId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("ProcessId", "SubProcessId");
 
                     b.HasIndex("SubProcessId");
 
-                    b.ToTable("Sub_Processes", (string)null);
+                    b.ToTable("sub_processes", "public");
                 });
 
             modelBuilder.Entity("EmployeeEquipment", b =>
