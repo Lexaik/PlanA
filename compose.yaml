@@ -1,7 +1,25 @@
 ﻿services:
+  db:
+    image: postgres:15-alpine
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
   plana:
     image: plana
-    build:
+    build: 
       context: .
       dockerfile: Dockerfile
-
+    command:
+    volumes:
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - 
