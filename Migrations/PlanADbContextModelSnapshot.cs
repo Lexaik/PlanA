@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PlanA.Context;
 
@@ -291,8 +290,7 @@ namespace PlanA.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Period>("Duration")
-                        .IsRequired()
+                    b.Property<TimeSpan>("Duration")
                         .HasColumnType("interval");
 
                     b.Property<string>("Name")
