@@ -10,7 +10,7 @@ namespace PlanA.Migrations
     public partial class Initial : Migration
     {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
+        /*protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
                 name: "public");
@@ -480,6 +480,6 @@ namespace PlanA.Migrations
             migrationBuilder.DropTable(
                 name: "persons",
                 schema: "public");
-        }
+        }*/
     }
 }

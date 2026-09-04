@@ -26,7 +26,8 @@ public class PlanADbContext : DbContext{
             .AddJsonFile("appsettings.json")
             //.SetBasePath(Directory.GetCurrentDirectory())
             .Build();
-        optionsBuilder.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+        //optionsBuilder.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+        optionsBuilder.UseSqlite(config.GetConnectionString("ReserveConnection"));
         //optionsBuilder.UseSqlite(config.GetConnectionString("ReserveConnection"));
     }
 

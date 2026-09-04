@@ -13,11 +13,11 @@ using PlanA.Context;
 namespace PlanA.Migrations
 {
     [DbContext(typeof(PlanADbContext))]
-    [Migration("20260726150618_Initial")]
+    //[Migration("20260726150618_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        /*protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -539,6 +539,6 @@ namespace PlanA.Migrations
                     b.Navigation("SubProcesses");
                 });
 #pragma warning restore 612, 618
-        }
+        }*/
     }
 }

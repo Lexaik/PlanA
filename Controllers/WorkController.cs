@@ -1,7 +1,10 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlanA.Context;
+using PlanA.DTO;
 using PlanA.Models;
+using PlanA.ViewModels;
 
 namespace PlanA.Controllers;
 
@@ -14,6 +17,20 @@ public class WorkController : Controller {
     
     public WorkController(PlanADbContext context) {
         _db = context;
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetTableData()
+    {
+        var Orders = await _db.orders.ToListAsync();
+        return Json(Orders);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAvailableProducts()
+    {
+        var Products = await _db.assets.Include(i => i.Item).ToListAsync();
+        return Json(Products);
     }
 
     public async Task<IActionResult> AssetsView() {
@@ -33,15 +50,9 @@ public class WorkController : Controller {
     public async Task<IActionResult> OrdersView() {
         return View(await _db.orders.ToListAsync());
     }
-    public IActionResult CreateOrder() {
-        return View();
-    }
-    [HttpPost]
-    public async Task<IActionResult> CreateOrder(Order order) {
-        _db.orders.Add(order);
-        await _db.SaveChangesAsync();
-        return RedirectToAction("OrdersView");
-    }
+
+    
+    
     
     public async Task<IActionResult> OperationsView() {
         return View(await _db.operations.ToListAsync());
